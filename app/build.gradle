@@ -1,0 +1,117 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+    dataBinding {
+        enabled = true
+    }
+    defaultConfig {
+        applicationId "com.hanix.myapplication"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        encoding "UTF-8"
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    dexOptions {
+        preDexLibraries = false
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def formattedDate = new Date().format('yyyyMMdd-HHmmss')
+            outputFileName = "base" + "_v${variant.versionName}_${variant.buildType.name}_${formattedDate}.apk"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.stanfy:gson-xml-java:0.1.7'
+    implementation 'androidx.core:core:1.3.0'
+
+    //Google Api Client
+    implementation 'com.google.api-client:google-api-client:1.30.9'
+
+    //JSoup Java HTML Parser
+    implementation 'org.jsoup:jsoup:1.12.1'
+
+    //permission
+    implementation 'gun0912.ted:tedpermission:1.0.2'
+
+    //apache http
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'commons-codec:commons-codec:20041127.091804'
+
+    // 당겨서 새로고침 라이브러리
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
+    //레트로핏
+    implementation 'com.squareup.okio:okio:2.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
+
+    // 앱 실행 시 하얀 화면 방지
+    implementation 'com.android.tools.build:gradle:4.0.0'
+
+    // 동그란 이미지
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.64'
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-core:17.4.3'
+    implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'androidx.work:work-runtime:2.3.4'
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+
+}
+// squareup duplication 오류 방지
+configurations {
+    all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp3'
+    all*.exclude group: 'com.squareup.okio', module: 'okio'
+    all*.exclude group: 'com.squareup.retrofit2', module: 'retrofit2'
+    all*.exclude group: 'com.android.support', module: 'support-v13'
+    all*.exclude group: 'com.android.tools.build', module: 'gradle'
+}
+apply plugin: 'com.google.gms.google-services'
+
