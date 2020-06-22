@@ -6,7 +6,7 @@ package com.hanix.myapplication.common.constants;
 public class AppConstants {
 
     /** App Tag **/
-    public static final String TAG = "BASE_Project";
+    public static final String TAG = "Test_App";
 
     /** 통신연결 Timeout 시간 **/
     public static final int TIME_OUT = 15000; //15초

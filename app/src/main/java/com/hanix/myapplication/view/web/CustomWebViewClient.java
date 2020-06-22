@@ -78,7 +78,7 @@ public class CustomWebViewClient extends WebViewClient {
      */
     @Override
     public void onPageFinished(final WebView view, String url) {
-        mActivity.resetBottomBtns();
+//        mActivity.resetBottomBtns();
         GLog.e("onPageFinished: " + url);
 
     }

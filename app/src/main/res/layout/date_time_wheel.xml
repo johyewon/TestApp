@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_height="wrap_content"
+  android:layout_width="fill_parent"
+  android:orientation="horizontal"
+  android:background="#00000000">
+  <!-- android:background="@drawable/layout_bg"> -->
+  <!-- android:layout_marginTop="12dp" -->
+
+  <com.hanix.myapplication.view.widget.WheelView
+    android:id="@+id/day"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_weight="1" />
+  <com.hanix.myapplication.view.widget.WheelView
+    android:id="@+id/hour"
+    android:layout_height="wrap_content"
+    android:layout_width="70dp" />
+  <com.hanix.myapplication.view.widget.WheelView
+    android:id="@+id/mins"
+    android:layout_height="wrap_content"
+    android:layout_width="70dp" />
+</LinearLayout><!-- From: file:/home/saad/workspace/github/android-wheel/datetime-picker/src/main/res/layout/date_time_wheel.xml -->
