@@ -47,7 +47,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             def formattedDate = new Date().format('yyyyMMdd-HHmmss')
-            outputFileName = "base" + "_v${variant.versionName}_${variant.buildType.name}_${formattedDate}.apk"
+            outputFileName = "TestApp" + "_v${variant.versionName}_${variant.buildType.name}_${formattedDate}.apk"
         }
     }
 }
@@ -103,9 +103,6 @@ dependencies {
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
     implementation 'androidx.work:work-runtime:2.3.4'
     implementation 'com.google.firebase:firebase-analytics:17.4.3'
-
-    //implementation 'com.googlecode.android-wheel:datetime-picker:1.0.0'
-
 
 }
 // squareup duplication 오류 방지

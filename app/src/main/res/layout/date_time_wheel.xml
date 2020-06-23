@@ -6,8 +6,6 @@
   android:layout_width="fill_parent"
   android:orientation="horizontal"
   android:background="#00000000">
-  <!-- android:background="@drawable/layout_bg"> -->
-  <!-- android:layout_marginTop="12dp" -->
 
   <com.hanix.myapplication.view.widget.WheelView
     android:id="@+id/day"
