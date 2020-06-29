@@ -1,4 +1,4 @@
-package com.hanix.myapplication.view.widget;
+package com.hanix.myapplication.view.widget.wheel;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -13,7 +13,7 @@ import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
 import com.hanix.myapplication.R;
-import com.hanix.myapplication.view.widget.adapter.WheelViewAdapter;
+import com.hanix.myapplication.view.widget.wheel.adapter.WheelViewAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -430,13 +430,11 @@ public class WheelView extends View {
                 pos++;
                 count--;
             }
-            // fix position by rotating
             while (pos < 0) {
                 pos += itemCount;
             }
             pos %= itemCount;
         } else {
-            //
             if (pos < 0) {
                 count = currentItem;
                 pos = 0;
@@ -459,27 +457,17 @@ public class WheelView extends View {
             invalidate();
         }
 
-        // update offset
         scrollingOffset = offset - count * itemHeight;
         if (scrollingOffset > getHeight()) {
             scrollingOffset = scrollingOffset % getHeight() + getHeight();
         }
     }
 
-    /**
-     * Scroll the wheel
-     * @param itemsToScroll items to scroll
-     * @param time scrolling duration
-     */
     public void scroll(int itemsToScroll, int time) {
         int distance = itemsToScroll * getItemHeight() - scrollingOffset;
         scroller.scroll(distance, time);
     }
 
-    /**
-     * Calculates range for wheel items
-     * @return the items range
-     */
     private ItemsRange getItemsRange() {
         if (getItemHeight() == 0) {
             return null;
@@ -490,7 +478,7 @@ public class WheelView extends View {
 
         while (count * getItemHeight() < getHeight()) {
             first--;
-            count += 2; // top + bottom items
+            count += 2;
         }
 
         if (scrollingOffset != 0) {
@@ -499,7 +487,6 @@ public class WheelView extends View {
             }
             count++;
 
-            // process empty items above the first or below the second
             int emptyItems = scrollingOffset / getItemHeight();
             first -= emptyItems;
             count += Math.asin(emptyItems);
@@ -507,11 +494,6 @@ public class WheelView extends View {
         return new ItemsRange(first, count);
     }
 
-    /**
-     * Rebuilds wheel items if necessary. Caches all unused items.
-     *
-     * @return true if items are rebuilt
-     */
     private boolean rebuildItems() {
         boolean updated = false;
         ItemsRange range = getItemsRange();

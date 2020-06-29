@@ -5,18 +5,18 @@
   android:layout_height="wrap_content"
   android:layout_width="fill_parent"
   android:orientation="horizontal"
-  android:background="#00000000">
+  android:background="#00FFFFFF">
 
-  <com.hanix.myapplication.view.widget.WheelView
+  <com.hanix.myapplication.view.widget.wheel.WheelView
     android:id="@+id/day"
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"
     android:layout_weight="1" />
-  <com.hanix.myapplication.view.widget.WheelView
+  <com.hanix.myapplication.view.widget.wheel.WheelView
     android:id="@+id/hour"
     android:layout_height="wrap_content"
     android:layout_width="70dp" />
-  <com.hanix.myapplication.view.widget.WheelView
+  <com.hanix.myapplication.view.widget.wheel.WheelView
     android:id="@+id/mins"
     android:layout_height="wrap_content"
     android:layout_width="70dp" />

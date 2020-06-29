@@ -1,4 +1,4 @@
-package com.hanix.myapplication.view.widget;
+package com.hanix.myapplication.view.widget.wheel;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,8 +8,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.hanix.myapplication.R;
-import com.hanix.myapplication.view.widget.adapter.NumericWheelAdapter;
-import com.hanix.myapplication.view.widget.adapter.DayArrayAdapter;
+import com.hanix.myapplication.view.widget.wheel.adapter.NumericWheelAdapter;
+import com.hanix.myapplication.view.widget.wheel.adapter.DayArrayAdapter;
 
 import java.util.Calendar;
 import java.util.Locale;

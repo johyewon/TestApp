@@ -3,46 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainLayout"
-    android:background="@color/light_blue_gray"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.MainActivity">
 
     <LinearLayout
         android:id="@+id/mainSlotLayout"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        android:layout_margin="10dp"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/mainBt"
         app:layout_constraintEnd_toStartOf="@+id/mainBt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/mainBt">
 
-        <com.hanix.myapplication.view.widget.WheelView
+        <com.hanix.myapplication.view.widget.wheel.WheelView
             android:id="@+id/mainSlot1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/transparent"
+            android:foregroundGravity="center"
             android:outlineAmbientShadowColor="@color/transparent" />
 
-        <com.hanix.myapplication.view.widget.WheelView
+        <com.hanix.myapplication.view.widget.wheel.WheelView
             android:id="@+id/mainSlot2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/transparent"
+            android:foregroundGravity="center"
             android:outlineAmbientShadowColor="@color/transparent" />
 
-        <com.hanix.myapplication.view.widget.WheelView
+        <com.hanix.myapplication.view.widget.wheel.WheelView
             android:id="@+id/mainSlot3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/transparent"
+            android:foregroundGravity="center"
             android:outlineAmbientShadowColor="@color/transparent" />
 
     </LinearLayout>
@@ -57,6 +62,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.25"
-        app:srcCompat="@drawable/common_full_open_on_phone" />
+        app:srcCompat="@drawable/lever" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

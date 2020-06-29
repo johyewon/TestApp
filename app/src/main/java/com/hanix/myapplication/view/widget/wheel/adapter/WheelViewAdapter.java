@@ -1,4 +1,4 @@
-package com.hanix.myapplication.view.widget.adapter;
+package com.hanix.myapplication.view.widget.wheel.adapter;
 
 import android.database.DataSetObserver;
 import android.view.View;

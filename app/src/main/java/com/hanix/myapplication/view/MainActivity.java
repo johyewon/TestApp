@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -14,10 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.hanix.myapplication.R;
 import com.hanix.myapplication.common.app.GLog;
-import com.hanix.myapplication.view.widget.OnWheelChangedListener;
-import com.hanix.myapplication.view.widget.OnWheelScrollListener;
-import com.hanix.myapplication.view.widget.WheelView;
-import com.hanix.myapplication.view.widget.adapter.AbstractWheelAdapter;
+import com.hanix.myapplication.view.widget.wheel.OnWheelChangedListener;
+import com.hanix.myapplication.view.widget.wheel.OnWheelScrollListener;
+import com.hanix.myapplication.view.widget.wheel.WheelView;
+import com.hanix.myapplication.view.widget.wheel.adapter.AbstractWheelAdapter;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -28,15 +29,59 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isFirWheelStop, isSecWheelStop, isThrWheelStop = true;
     private boolean isWheelRunning = false;
+    private final int[] items1 = new int[] {
+            R.drawable.bear,
+            R.drawable.cow,
+            R.drawable.fox,
+            R.drawable.lion,
+            R.drawable.mouse,
+            R.drawable.dog,
+            R.drawable.dolphin,
+            R.drawable.koala,
+            R.drawable.polar_bear,
+            R.drawable.rabbit,
+            R.drawable.reindeer,
+            R.drawable.whale
+    };
+    private final int[] items2 = new int[] {
+            R.drawable.bat,
+            R.drawable.bee,
+            R.drawable.bird,
+            R.drawable.butterfly,
+            R.drawable.camel,
+            R.drawable.cat,
+            R.drawable.chameleon,
+            R.drawable.chicken,
+            R.drawable.clownfish,
+            R.drawable.crab,
+            R.drawable.crocodile,
+            R.drawable.duck
+    };
+    private final int[] items3 = new int[] {
+            R.drawable.elephant,
+            R.drawable.flamingo,
+            R.drawable.frog,
+            R.drawable.giraffe,
+            R.drawable.hippopotamus,
+            R.drawable.horse,
+            R.drawable.kangaroo,
+            R.drawable.llama,
+            R.drawable.manta_ray,
+            R.drawable.monkey,
+            R.drawable.owl,
+            R.drawable.panther
+    };
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        initWheel(R.id.mainSlot1);
-        initWheel(R.id.mainSlot2);
-        initWheel(R.id.mainSlot3);
+        initWheel(R.id.mainSlot1, items1);
+        initWheel(R.id.mainSlot2, items2);
+        initWheel(R.id.mainSlot3, items3);
 
         ImageView mix = (ImageView)findViewById(R.id.mainBt);
         mix.setOnClickListener(new View.OnClickListener() {
@@ -89,76 +134,186 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getResult() {
-        GLog.d("First Result : " + result(getWheel(R.id.mainSlot1).getCurrentItem()));
-        GLog.d("Second Result : " + result(getWheel(R.id.mainSlot2).getCurrentItem()));
-        GLog.d("Third Result : " + result(getWheel(R.id.mainSlot3).getCurrentItem()));
+        GLog.d("First Result : " + result(1, getWheel(R.id.mainSlot1).getCurrentItem()));
+        GLog.d("Second Result : " + result(2, getWheel(R.id.mainSlot2).getCurrentItem()));
+        GLog.d("Third Result : " + result(3, getWheel(R.id.mainSlot3).getCurrentItem()));
     }
 
-    private String result(int index) {
+    private String result(int slot, int index) {
         String returnString = "";
-        switch (index) {
-            case 0 :
-                returnString = "곰";
-                break;
+        if(slot == 1) {
+            switch (index) {
+                case 0 :
+                    returnString = "곰";
+                    break;
 
-            case 1 :
-                returnString = "소";
-                break;
+                case 1 :
+                    returnString = "소";
+                    break;
 
-            case 2 :
-                returnString = "여우";
-                break;
+                case 2 :
+                    returnString = "여우";
+                    break;
 
-            case 3 :
-                returnString = "사자";
-                break;
+                case 3 :
+                    returnString = "사자";
+                    break;
 
-            case 4:
-                returnString = "쥐";
-                break;
+                case 4:
+                    returnString = "쥐";
+                    break;
 
-            case 5 :
-                returnString = "개";
-                break;
+                case 5 :
+                    returnString = "개";
+                    break;
 
-            case 6 :
-                returnString = "돌고래";
-                break;
+                case 6 :
+                    returnString = "돌고래";
+                    break;
 
-            case 7 :
-                returnString = "코알라";
-                break;
+                case 7 :
+                    returnString = "코알라";
+                    break;
 
-            case 8 :
-                returnString = "북극곰";
-                break;
+                case 8 :
+                    returnString = "북극곰";
+                    break;
 
-            case 9 :
-                returnString = "토끼";
-                break;
+                case 9 :
+                    returnString = "토끼";
+                    break;
 
-            case 10 :
-                returnString = "순록";
-                break;
+                case 10 :
+                    returnString = "순록";
+                    break;
 
-            case 11 :
-                returnString = "고래";
-                break;
+                case 11 :
+                    returnString = "고래";
+                    break;
 
+            }
+        } else if(slot == 2) {
+            switch (index) {
+                case 0 :
+                    returnString = "박쥐";
+                    break;
+
+                case 1 :
+                    returnString = "벌";
+                    break;
+
+                case 2 :
+                    returnString = "새";
+                    break;
+
+                case 3 :
+                    returnString = "나비";
+                    break;
+
+                case 4:
+                    returnString = "낙타";
+                    break;
+
+                case 5 :
+                    returnString = "고양이";
+                    break;
+
+                case 6 :
+                    returnString = "카멜레온";
+                    break;
+
+                case 7 :
+                    returnString = "닭";
+                    break;
+
+                case 8 :
+                    returnString = "니모";
+                    break;
+
+                case 9 :
+                    returnString = "게";
+                    break;
+
+                case 10 :
+                    returnString = "악어";
+                    break;
+
+                case 11 :
+                    returnString = "오리";
+                    break;
+
+            }
+        } else {
+            switch (index) {
+                case 0 :
+                    returnString = "코끼리";
+                    break;
+
+                case 1 :
+                    returnString = "플라밍고";
+                    break;
+
+                case 2 :
+                    returnString = "개구리";
+                    break;
+
+                case 3 :
+                    returnString = "기린";
+                    break;
+
+                case 4:
+                    returnString = "하마";
+                    break;
+
+                case 5 :
+                    returnString = "말";
+                    break;
+
+                case 6 :
+                    returnString = "캥거루";
+                    break;
+
+                case 7 :
+                    returnString = "라마";
+                    break;
+
+                case 8 :
+                    returnString = "가오리";
+                    break;
+
+                case 9 :
+                    returnString = "원숭이";
+                    break;
+
+                case 10 :
+                    returnString = "부엉이";
+                    break;
+
+                case 11 :
+                    returnString = "표범";
+                    break;
+
+            }
         }
         return returnString;
     }
 
-    private void initWheel(int id) {
+    private void initWheel(int id, int[] items) {
         WheelView wheel = getWheel(id);
-        wheel.setViewAdapter(new SlotMachineAdapter(this));
+        if(items != null && items.length > 0) {
+            wheel.setViewAdapter(new SlotMachineAdapter(this, items));
+        }
         wheel.setCurrentItem((int)(Math.random() * 10));
-        wheel.setVisibility(3);
-        wheel.setBackgroundColor(Color.TRANSPARENT);
-        wheel.setOutlineSpotShadowColor(Color.TRANSPARENT);
-        wheel.setOutlineAmbientShadowColor(Color.TRANSPARENT);
-        wheel.setForegroundGravity(Gravity.CENTER);
-
+        wheel.setVisibility(View.VISIBLE);
+        wheel.setPadding(5,5,5,5);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            wheel.setBackgroundColor(Color.TRANSPARENT);
+            wheel.setForegroundGravity(Gravity.CENTER);
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            wheel.setOutlineSpotShadowColor(Color.TRANSPARENT);
+            wheel.setOutlineAmbientShadowColor(Color.TRANSPARENT);
+        }
         wheel.addChangingListener(changedListener);
         wheel.addScrollingListener(scrolledListener);
         wheel.setCyclic(true);
@@ -177,30 +332,20 @@ public class MainActivity extends AppCompatActivity {
         wheel.scroll(-350 + (int)(Math.random() * 50), 1500);
     }
 
+
+
+
     private class SlotMachineAdapter extends AbstractWheelAdapter {
         final int IMAGE_WIDTH = 100;
         final int IMAGE_HEIGHT = 100;
-
-        private final int items[] = new int[] {
-                R.drawable.bear,
-                R.drawable.cow,
-                R.drawable.fox,
-                R.drawable.lion,
-                R.drawable.mouse,
-                R.drawable.dog,
-                R.drawable.dolphin,
-                R.drawable.koala,
-                R.drawable.polar_bear,
-                R.drawable.rabbit,
-                R.drawable.reindeer,
-                R.drawable.whale
-        };
+        int[] items;
 
         private List<SoftReference<Bitmap>> images;
         private Context context;
 
-        public SlotMachineAdapter(Context context) {
+        public SlotMachineAdapter(Context context, int[] items) {
             this.context = context;
+            this.items = items;
             images = new ArrayList<SoftReference<Bitmap>>(items.length);
             for (int id : items) {
                 images.add(new SoftReference<Bitmap>(loadImage(id)));

@@ -1,9 +1,7 @@
-package com.hanix.myapplication.view.widget;
+package com.hanix.myapplication.view.widget.wheel;
 
 import android.view.View;
 import android.widget.LinearLayout;
-
-import com.hanix.myapplication.view.widget.WheelView;
 
 import java.util.LinkedList;
 import java.util.List;

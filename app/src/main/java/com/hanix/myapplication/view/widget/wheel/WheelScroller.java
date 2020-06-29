@@ -1,5 +1,6 @@
-package com.hanix.myapplication.view.widget;
+package com.hanix.myapplication.view.widget.wheel;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -111,11 +112,13 @@ public class WheelScroller {
         animationHandler.sendEmptyMessage(message);
     }
 
+
     private void clearMessages() {
         animationHandler.removeMessages(MESSAGE_SCROLL);
         animationHandler.removeMessages(MESSAGE_JUSTIFY);
     }
 
+    @SuppressLint("HandlerLeak")
     private Handler animationHandler = new Handler() {
         public void handleMessage(Message msg) {
             scroller.computeScrollOffset();

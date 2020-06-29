@@ -1,4 +1,4 @@
-package com.hanix.myapplication.view.widget;
+package com.hanix.myapplication.view.widget.wheel;
 
 public interface OnWheelClickedListener {
 
