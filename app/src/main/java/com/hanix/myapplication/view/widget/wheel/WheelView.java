@@ -22,7 +22,7 @@ public class WheelView extends View {
 
     private static final int[] SHADOWS_COLORS = new int[] {0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF};
     private static final int ITEM_OFFSET_PERCENT = 10;
-    private static final int PADDING = 5;
+    private static final int PADDING = 0;
     private static final int DEF_VISIBLE_ITEMS = 5;
 
     private int currentItem = 0;
