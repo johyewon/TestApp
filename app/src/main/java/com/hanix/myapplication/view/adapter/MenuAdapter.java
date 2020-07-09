@@ -58,7 +58,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
 
     @NonNull
     @Override
-    public MenuAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu, parent, false);
         return new Holder(view);
     }
@@ -71,14 +71,16 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
         holder.menuLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(itemClick != null)
+                    itemClick.onClick(view, num);
             }
         });
 
         holder.menuName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(itemClick != null)
+                    itemClick.onClick(view, num);
             }
         });
     }
@@ -88,6 +90,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
         return items.size();
     }
 
-    public Object getItem(int position) {return items.get(position);}
+    public Object getItem(int position) { return items.get(position); }
 
 }

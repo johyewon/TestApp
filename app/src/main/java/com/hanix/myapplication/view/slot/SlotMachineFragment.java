@@ -1,14 +1,17 @@
 package com.hanix.myapplication.view.slot;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,9 +27,10 @@ import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlotMachineActivity extends AppCompatActivity {
+public class SlotMachineFragment extends Fragment {
 
     private boolean isFirWheelStop, isSecWheelStop, isThrWheelStop = true;
+    private boolean wheelScrolled = false;
     private boolean isWheelRunning = false;
 
     private final int[] items1 = new int[] {
@@ -72,16 +76,19 @@ public class SlotMachineActivity extends AppCompatActivity {
             R.drawable.panther
     };
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    static ViewGroup rootView;
 
-        setContentView(R.layout.activity_slot_machine);
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_slot_machine, container, false);
+
         initWheel(R.id.mainSlot1, items1);
         initWheel(R.id.mainSlot2, items2);
         initWheel(R.id.mainSlot3, items3);
 
-        ImageView mix = (ImageView)findViewById(R.id.mainBt);
+        ImageView mix = (ImageView) rootView.findViewById(R.id.mainBt);
         mix.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 isFirWheelStop = false;
@@ -90,9 +97,9 @@ public class SlotMachineActivity extends AppCompatActivity {
             }
         });
         updateStatus();
-    }
 
-    private boolean wheelScrolled = false;
+        return rootView;
+    }
 
     OnWheelScrollListener scrolledListener = new OnWheelScrollListener() {
         public void onScrollingStarted(WheelView wheel) {
@@ -298,7 +305,7 @@ public class SlotMachineActivity extends AppCompatActivity {
     private void initWheel(int id, int[] items) {
         WheelView wheel = getWheel(id);
         if(items != null && items.length > 0) {
-            wheel.setViewAdapter(new SlotMachineAdapter(this, items));
+            wheel.setViewAdapter(new SlotMachineAdapter(getContext(), items));
         }
         wheel.setCurrentItem((int)(Math.random() * 10));
         wheel.setVisibility(View.VISIBLE);
@@ -314,11 +321,12 @@ public class SlotMachineActivity extends AppCompatActivity {
         wheel.addChangingListener(changedListener);
         wheel.addScrollingListener(scrolledListener);
         wheel.setCyclic(true);
+        wheel.setVisibleItems(3);
         wheel.setEnabled(false);
     }
 
     private WheelView getWheel(int id) {
-        return (WheelView) findViewById(id);
+        return (WheelView) rootView.findViewById(id);
     }
 
     private void mixWheel(int id) {
@@ -327,8 +335,8 @@ public class SlotMachineActivity extends AppCompatActivity {
     }
 
     private static class SlotMachineAdapter extends AbstractWheelAdapter {
-        final int IMAGE_WIDTH = 250;
-        final int IMAGE_HEIGHT = 250;
+        final int IMAGE_WIDTH = 150;
+        final int IMAGE_HEIGHT = 150;
         int[] items;
 
         private List<SoftReference<Bitmap>> images;

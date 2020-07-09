@@ -40,29 +40,9 @@ public class AppIntro extends AppCompatActivity {
         setContentView(R.layout.activity_app_intro);
         getIntent().addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        Log.d("Key is", "key is " + getKeyHash(getApplicationContext()));
-
         // new VersionCheckTask(this, mVersionCheckTaskCallbackInterface).execute(); // 버전 체크scro
 
         sf = getSharedPreferences("Pref", MODE_PRIVATE);
-    }
-
-    public static String getKeyHash(final Context context) {
-        Log.d("Key is", "im here");
-        PackageInfo packageInfo = getPackageInfo(context, PackageManager.GET_SIGNATURES);
-        if (packageInfo == null)
-            return null;
-
-        for (Signature signature : packageInfo.signatures) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                return Base64.encodeToString(md.digest(), Base64.NO_WRAP);
-            } catch (NoSuchAlgorithmException e) {
-                GLog.e("Unable to get MessageDigest. signature=" + signature, e);
-            }
-        }
-        return null;
     }
 
     @SuppressLint("HandlerLeak")

@@ -31,4 +31,6 @@
 
     <string name="file_downloading">파일이 다운로드됩니다.</string>
     <string name="file_download_permission">파일 다운로드를 위해 권한이 필요합니다.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
