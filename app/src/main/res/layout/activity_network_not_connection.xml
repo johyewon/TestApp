@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanumgothic"
         android:gravity="center"
-        android:text="@string/err_msg_not_connect_inernet"
+        android:text="@string/err_msg_not_connect_internet"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

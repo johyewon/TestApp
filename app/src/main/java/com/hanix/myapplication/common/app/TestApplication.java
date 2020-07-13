@@ -11,6 +11,7 @@ import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
+import com.kakao.auth.KakaoSDK;
 
 import java.io.File;
 
@@ -44,6 +45,14 @@ public class TestApplication extends MultiDexApplication {
 
         logForPkgName = this.getPackageName();
 
+        KakaoSDK.init(new KakaoSDKAdapter());
+
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        instance = null;
     }
 
     public void finishApp(Activity activity) {

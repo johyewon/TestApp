@@ -34,7 +34,7 @@ public class DayArrayAdapter extends AbstractWheelTextAdapter {
         TextView monthday = (TextView) view.findViewById(R.id.time2_monthday);
         DateFormat format = new SimpleDateFormat("M/dd");
         monthday.setText(format.format(newCalendar.getTime()));
-        monthday.setText(0x00FFFFFF);
+        monthday.setTextColor(0x00FFFFFF);
 
         return view;
     }

@@ -3,6 +3,7 @@ package com.hanix.myapplication.view;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.hanix.myapplication.common.utils.DlgUtil;
 import com.hanix.myapplication.view.adapter.MenuAdapter;
 import com.hanix.myapplication.view.event.OnSingleClickListener;
 import com.hanix.myapplication.view.slot.SlotMachineFragment;
+import com.hanix.myapplication.view.slot.SnsLoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
         items = new ArrayList<>();
         items.add("카지노 룰렛 휠");
+        items.add("SNS 로그인");
         menuAdapter = new MenuAdapter(items, getApplicationContext());
         menuAdapter.setItemClick(new MenuAdapter.ItemClick() {
             @Override
@@ -177,6 +180,12 @@ public class MainActivity extends AppCompatActivity {
                 if(fragment != null)
                     transaction.remove(fragment);
                 transaction.replace(R.id.container, slotMachineFragment).commitAllowingStateLoss();
+                break;
+
+            case "SNS 로그인" :
+                Intent intent = new Intent(MainActivity.this, SnsLoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in_activity, R.anim.hold_activity);
                 break;
 
             default:
