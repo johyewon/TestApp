@@ -114,7 +114,7 @@ dependencies {
     // sns login
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.29.0'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
-
+    implementation 'com.naver.nid:naveridlogin-android-sdk:4.2.6'
 
     // butterknife
     implementation 'com.jakewharton:butterknife:10.0.0'

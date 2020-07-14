@@ -28,6 +28,9 @@
 -keep class com.actionbarsherlock.** { *; }
 -keep interface com.actionbarsherlock.** { *; }
 -keep class * { *; }
+-keep public class com.nhn.android.naverlogin.** {
+       public protected *;
+}
 
 -keepattributes *Annotation*
 

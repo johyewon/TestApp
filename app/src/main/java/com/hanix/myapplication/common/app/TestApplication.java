@@ -12,6 +12,7 @@ import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
+import com.nhn.android.naverlogin.OAuthLogin;
 
 import java.io.File;
 
@@ -31,6 +32,7 @@ public class TestApplication extends MultiDexApplication {
     //로그에서 사용되는 패키지명
     public String logForPkgName = "";
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -46,6 +48,7 @@ public class TestApplication extends MultiDexApplication {
         logForPkgName = this.getPackageName();
 
         KakaoSDK.init(new KakaoSDKAdapter());
+
 
     }
 

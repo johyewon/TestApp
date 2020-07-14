@@ -36,6 +36,8 @@ import com.kakao.auth.AuthType;
 import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.nhn.android.naverlogin.OAuthLogin;
+import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
 public class SnsLoginActivity extends AppCompatActivity {
 
@@ -55,6 +57,9 @@ public class SnsLoginActivity extends AppCompatActivity {
     private static final int GOOGLE_SIGN_IN = 9001;
     GoogleSignInOptions gso;
 
+    // naver
+    OAuthLogin mOAuthLoginModule;
+    OAuthLoginButton naverLoginButton;
 
     ConstraintLayout snsLayout;
     ImageView backView;
@@ -96,6 +101,11 @@ public class SnsLoginActivity extends AppCompatActivity {
 //            startActivity(intent);
 //            finish();
 //        }
+
+
+        // naver
+        mOAuthLoginModule = OAuthLogin.getInstance();
+        //  TODO : 검수 후에 다시 해야 함
     }
 
     @Override
@@ -114,14 +124,16 @@ public class SnsLoginActivity extends AppCompatActivity {
 
         if(requestCode == GOOGLE_SIGN_IN) {
             GLog.d("here i am");
+
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                getData(account);
-
+               GoogleSignInAccount account = task.getResult(ApiException.class);
+               GLog.d("firebaseAuthWithGoogle : " + account.getId());
+               getData(account);
             } catch (ApiException e) {
                 GLog.e(e.getMessage(), e);
             }
+
         }
     }
 
@@ -138,15 +150,31 @@ public class SnsLoginActivity extends AppCompatActivity {
     };
 
     private void getData(GoogleSignInAccount acc) {
-        if(acc != null && !acc.getEmail().equals("")) {
-            googleLoginButton.setVisibility(View.VISIBLE);
-            googleLogoutButton.setVisibility(View.VISIBLE);
-            GLog.d("user email is " + acc.getEmail());
-            GLog.d("user uid is " + acc.getId());
-            GLog.d("user display name is " + acc.getDisplayName());
-            GLog.d("user photoUrl is " + acc.getPhotoUrl());
 
-        }
+        AuthCredential credential = GoogleAuthProvider.getCredential(acc.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                       if(task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                           if(acc != null && !acc.getEmail().equals("")) {
+                               googleLoginButton.setVisibility(View.VISIBLE);
+                               googleLogoutButton.setVisibility(View.VISIBLE);
+                               GLog.d("user email is " + acc.getEmail());
+                               GLog.d("user uid is " + acc.getId());
+                               GLog.d("user display name is " + acc.getDisplayName());
+                               GLog.d("user photoUrl is " + acc.getPhotoUrl());
+
+                           } else {
+                               GLog.d("is null");
+                           }
+                       } else {
+                           GLog.d("user is null");
+                       }
+                    }
+                });
+
     }
 
 
