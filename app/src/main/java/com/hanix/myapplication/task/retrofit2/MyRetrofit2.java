@@ -2,7 +2,10 @@ package com.hanix.myapplication.task.retrofit2;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hanix.myapplication.common.constants.AppConstants;
 import com.hanix.myapplication.common.constants.URLApi;
+
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -22,6 +25,9 @@ public class MyRetrofit2 {
         logger.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpclient = new OkHttpClient.Builder();
         httpclient.addInterceptor(logger);
+        httpclient.connectTimeout(AppConstants.TIME_OUT, TimeUnit.MILLISECONDS);
+        httpclient.readTimeout(AppConstants.TIME_OUT, TimeUnit.MILLISECONDS);
+        httpclient.writeTimeout(AppConstants.TIME_OUT, TimeUnit.MILLISECONDS);
 
         Gson gson = new GsonBuilder()                                               // 데이터를 자동으로 컨버팅할 수 있게 GsonFactory 사용
                 .setLenient()

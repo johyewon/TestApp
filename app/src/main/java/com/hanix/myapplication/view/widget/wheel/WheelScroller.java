@@ -14,11 +14,8 @@ public class WheelScroller {
     public interface ScrollingListener {
 
         void onScroll(int distance);
-
         void onStarted();
-
         void onFinished();
-
         void onJustify();
     }
 
@@ -27,7 +24,6 @@ public class WheelScroller {
     public static final int MIN_DELTA_FOR_SCROLLING = 1;
 
     private ScrollingListener listener;
-
     private Context context;
 
     private GestureDetector gestureDetector;
@@ -37,7 +33,20 @@ public class WheelScroller {
     private boolean isScrollingPerformed;
 
     public WheelScroller(Context context, ScrollingListener listener){
-        gestureDetector = new GestureDetector(context, gestureListener);
+        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return true;
+            }
+
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                lastScrollY = 0;
+                final int maxY = 0x7FFFFFFF;
+                final int minY = -maxY;
+                scroller.fling(0, lastScrollY, 0, (int) -velocityY, 0, 0, minY, maxY);
+                setNextMessage(MESSAGE_SCROLL);
+                return true;
+            }
+        });
         gestureDetector.setIsLongpressEnabled(false);
 
         scroller = new Scroller(context);
@@ -87,21 +96,6 @@ public class WheelScroller {
 
         return true;
     }
-
-    private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            return true;
-        }
-
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            lastScrollY = 0;
-            final int maxY = 0x7FFFFFFF;
-            final int minX = -maxY;
-            scroller.fling(0, lastScrollY, 0, (int) -velocityY, 0, 0, minX, maxY);
-            setNextMessage(MESSAGE_SCROLL);
-            return true;
-        }
-    };
 
     // 메시지
     private final int MESSAGE_SCROLL = 0;

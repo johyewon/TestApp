@@ -10,13 +10,11 @@ import android.widget.TextView;
 
 import com.hanix.myapplication.common.app.GLog;
 
-
 public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
 
     public static final int TEXT_VIEW_ITEM_RESOURCE = -1;
     public static final int NO_RESOURCE = 0;
     public static final int DEFAULT_TEXT_COLOR = 0x00FFFFFF;
-    public static final int LABEL_COLOR = 0x00FFFFFF;
     public static final int DEFAULT_TEXT_SIZE = 24;
 
     private int textColor = DEFAULT_TEXT_COLOR;
@@ -115,7 +113,7 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
             if(textResource == NO_RESOURCE && view instanceof TextView) {
                 text = (TextView) view;
             } else {
-                text = (TextView) text.findViewById(textResource);
+                    text = text.findViewById(textResource);
             }
         } catch (ClassCastException e) {
             GLog.e(e.getMessage(), e);

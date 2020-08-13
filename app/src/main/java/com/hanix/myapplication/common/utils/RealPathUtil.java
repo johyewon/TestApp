@@ -46,7 +46,7 @@ public class RealPathUtil {
 
             } else if(isDownloadsDocument(uri)) {
                 final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
 
                 return getDataColumn(context, contentUri, null, null);
 
@@ -171,10 +171,16 @@ public class RealPathUtil {
 
     public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };
+        @SuppressLint("Recycle")
         Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(columnIndex);
+        int columnIndex;
+        String result = "";
+        if (cursor != null) {
+            columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            result = cursor.getString(columnIndex);
+        }
+        return result;
 
     }
 

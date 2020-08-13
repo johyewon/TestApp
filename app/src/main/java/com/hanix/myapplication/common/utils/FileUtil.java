@@ -10,11 +10,10 @@ import java.io.FileWriter;
 
 public class FileUtil {
 
-
     public static void saveTextToFile(String fileFullPath, String msg, boolean isAppend) {
         try {
             File file = new File(fileFullPath);
-            if(!file.exists()) {
+            if (!file.exists()) {
                 file.createNewFile();
             }
             FileWriter fw = new FileWriter(file.getAbsoluteFile(), isAppend);
@@ -31,9 +30,7 @@ public class FileUtil {
 
     public static StringBuffer loadTextFile(String fileFullPath) {
         StringBuffer sb = new StringBuffer();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(fileFullPath));
+        try (BufferedReader br = new BufferedReader(new FileReader(fileFullPath))) {
             String line = br.readLine();
             while (line != null) {
                 sb.append(line);
@@ -42,61 +39,63 @@ public class FileUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if(br != null) {
-                try {br.close();}catch (Exception ee){}
-            }
         }
         return sb;
     }
 
     public static boolean delFile(String fileFullPath) {
         try {
-            File existfile = new File(fileFullPath);
-            if(existfile.exists()) {
-                return existfile.delete();
+            File existFile = new File(fileFullPath);
+            if (existFile.exists()) {
+                return existFile.delete();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return  false;
+        return false;
     }
 
     public static boolean isCacheFileExist(Context context, String fileName) {
         try {
-            File existfile = new File(context.getCacheDir(), fileName);
-            return existfile.exists();
+            File existFile = new File(context.getCacheDir(), fileName);
+            return existFile.exists();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public static void delteCacheFile(Context context, String fileName) {
+    public static void deleteCacheFile(Context context, String fileName) {
         try {
             File file = File.createTempFile(fileName, null, context.getCacheDir());
             file.delete();
-        } catch (Exception e) { e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void deleteAllCache(Context context) {
         try {
             File dir = context.getCacheDir();
             deleteDir(dir);
-        } catch (Exception e) { e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
+            if (children != null) {
+                for (String child : children) {
+                    boolean success = deleteDir(new File(dir, child));
+                    if (!success) {
+                        return false;
+                    }
                 }
             }
             return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
+        } else if (dir != null && dir.isFile()) {
             return dir.delete();
         } else {
             return false;

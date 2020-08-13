@@ -5,18 +5,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.hanix.myapplication.common.constants.AppConstants;
 
 /**
  * 로그 통합 관리
  */
 public class GLog {
-
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    public static boolean IsLogSaveOnOff = false;
-
 
     /**
      * 현재 디버그 모드여부를 리턴
@@ -28,9 +22,9 @@ public class GLog {
 
         PackageManager pm = context.getPackageManager();
         try {
-            ApplicationInfo appinfo = pm.getApplicationInfo(context.getPackageName(), 0);
-            debuggable = (0 != (appinfo.flags & ApplicationInfo.FLAG_DEBUGGABLE));
-        } catch (PackageManager.NameNotFoundException e) {
+            ApplicationInfo appInfo = pm.getApplicationInfo(context.getPackageName(), 0);
+            debuggable = (0 != (appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE));
+        } catch (PackageManager.NameNotFoundException ignored) {
             /* debuggable variable will remain false */
         }
 
@@ -44,8 +38,6 @@ public class GLog {
 
         if(theMsg.length() > MAX_INDEX) {
             String theSubString = theMsg.substring(0, MAX_INDEX);
-            int theIndex = MAX_INDEX;
-
             theSubString = getWithMethodName(theSubString);
 
             switch(logType) {
@@ -59,7 +51,7 @@ public class GLog {
                     Log.e(AppConstants.TAG, theSubString);
                     break;
             }
-            dLong(theMsg.substring(theIndex), theIndex);
+            dLong(theMsg.substring(MAX_INDEX), MAX_INDEX);
         } else {
             theMsg = getWithMethodName(theMsg);
 
@@ -80,14 +72,12 @@ public class GLog {
     private static String getWithMethodName (String log) {
         try {
             StackTraceElement ste = Thread.currentThread().getStackTrace()[5];
-            StringBuffer sb = new StringBuffer();
-            sb.append("[");
-            sb.append(ste.getFileName().replace(".java", ""));
-            sb.append("::");
-            sb.append(ste.getMethodName());
-            sb.append("]");
-            sb.append(log);
-            return sb.toString();
+            return "["
+                    + ste.getFileName().replace(".java", "")
+                    + "::"
+                    + ste.getMethodName()
+                    + "]"
+                    + log;
         } catch (Throwable e) {
             e.printStackTrace();
             return log;

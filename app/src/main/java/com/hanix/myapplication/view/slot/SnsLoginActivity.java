@@ -1,10 +1,6 @@
 package com.hanix.myapplication.view.slot;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,19 +9,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hanix.myapplication.R;
 import com.hanix.myapplication.common.app.GLog;
@@ -39,13 +35,17 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
+import java.util.Objects;
+
 public class SnsLoginActivity extends AppCompatActivity {
 
     // kakao
     Session session;
     SessionCallback sessionCallback = new SessionCallback();
 
+    @SuppressLint("StaticFieldLeak")
     static Button kakaoCustomLogin;
+    @SuppressLint("StaticFieldLeak")
     static Button kakaoCustomLogout;
     LinearLayout kakaoLayout;
 
@@ -80,8 +80,8 @@ public class SnsLoginActivity extends AppCompatActivity {
         kakaoCustomLogin = findViewById(R.id.kakaoCustomLogin);
         kakaoCustomLogout = findViewById(R.id.kakaoCustomLogout);
         kakaoLayout = findViewById(R.id.kakaoLayout);
-        kakaoCustomLogin.setOnClickListener(kakaoClick);
-        kakaoCustomLogout.setOnClickListener(kakaoClick);
+        kakaoCustomLogin.setOnClickListener(loginButton);
+        kakaoCustomLogout.setOnClickListener(loginButton);
         kakaoCustomLogout.setVisibility(View.GONE);
 
         // google
@@ -92,19 +92,21 @@ public class SnsLoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         signInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
-        googleLogoutButton.setOnClickListener(googleClick);
-        googleLoginButton.setOnClickListener(googleClick);
+        googleLogoutButton.setOnClickListener(loginButton);
+        googleLoginButton.setOnClickListener(loginButton);
         googleLogoutButton.setVisibility(View.GONE);
-        // 로그인 하고 다음에 다시 로그인 하게 하지 않으려면 이 코드를 넣으면 됨
-//        if(mAuth.getCurrentUser() != null) {
-//            Intent intent = new Intent(getApplication(), 넘어갈액티비티.class);
-//            startActivity(intent);
-//            finish();
-//        }
-
+/*
+ - 로그인을 한 상태라면 재로그인 하게 해줌
+        if(mAuth.getCurrentUser() != null) {
+            Intent intent = new Intent(getApplication(), 넘어갈액티비티.class);
+            startActivity(intent);
+            finish();
+        }
+*/
 
         // naver
         mOAuthLoginModule = OAuthLogin.getInstance();
+        naverLoginButton = findViewById(R.id.naverLoginButton);
         //  TODO : 검수 후에 다시 해야 함
     }
 
@@ -116,36 +118,33 @@ public class SnsLoginActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             return;
         }
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GOOGLE_SIGN_IN) {
+        if (requestCode == GOOGLE_SIGN_IN) {
             GLog.d("here i am");
 
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-               GoogleSignInAccount account = task.getResult(ApiException.class);
-               GLog.d("firebaseAuthWithGoogle : " + account.getId());
-               getData(account);
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                if (account != null) {
+                    GLog.d("firebaseAuthWithGoogle : " + account.getId());
+                    getData(account);
+                }
             } catch (ApiException e) {
                 GLog.e(e.getMessage(), e);
             }
-
         }
     }
 
-    View.OnClickListener snsClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(view.getId() == R.id.backView) {
-                Intent intent = new Intent(SnsLoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in_activity, R.anim.hold_activity);
-                finish();
-            }
+    View.OnClickListener snsClick = (view) -> {
+        if (view.getId() == R.id.backView) {
+            startActivity(new Intent(SnsLoginActivity.this, MainActivity.class));
+            overridePendingTransition(R.anim.fade_in_activity, R.anim.hold_activity);
+            finish();
         }
     };
 
@@ -153,25 +152,20 @@ public class SnsLoginActivity extends AppCompatActivity {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acc.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                       if(task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                           if(acc != null && !acc.getEmail().equals("")) {
-                               googleLoginButton.setVisibility(View.VISIBLE);
-                               googleLogoutButton.setVisibility(View.VISIBLE);
-                               GLog.d("user email is " + acc.getEmail());
-                               GLog.d("user uid is " + acc.getId());
-                               GLog.d("user display name is " + acc.getDisplayName());
-                               GLog.d("user photoUrl is " + acc.getPhotoUrl());
-
-                           } else {
-                               GLog.d("is null");
-                           }
-                       } else {
-                           GLog.d("user is null");
-                       }
+                .addOnCompleteListener(this, (task) -> {
+                    if (task.isSuccessful()) {
+                        if (!Objects.equals(acc.getEmail(), "")) {
+                            googleLoginButton.setVisibility(View.VISIBLE);
+                            googleLogoutButton.setVisibility(View.VISIBLE);
+                            GLog.d("user email is " + acc.getEmail());
+                            GLog.d("user uid is " + acc.getId());
+                            GLog.d("user display name is " + acc.getDisplayName());
+                            GLog.d("user photoUrl is " + acc.getPhotoUrl());
+                        } else {
+                            GLog.d("is null");
+                        }
+                    } else {
+                        GLog.d("user is null");
                     }
                 });
 
@@ -184,40 +178,30 @@ public class SnsLoginActivity extends AppCompatActivity {
     }
 
 
-    // Google login
-    OnSingleClickListener googleClick = new OnSingleClickListener() {
+    OnSingleClickListener loginButton = new OnSingleClickListener() {
         @Override
         public void onSingleClick(View v) {
             switch (v.getId()) {
-                case R.id.googleLoginButton :
+                case R.id.googleLoginButton:
                     GLog.d("googleLoginButton");
                     signIn();
                     break;
 
-                case R.id.googleLogoutButton :
+                case R.id.googleLogoutButton:
                     GLog.d("googleLogoutButton");
                     googleLoginButton.setVisibility(View.VISIBLE);
                     googleLogoutButton.setVisibility(View.GONE);
                     FirebaseAuth.getInstance().signOut();
                     break;
-            }
-        }
-    };
 
-
-    // kakao login
-    OnSingleClickListener kakaoClick = new OnSingleClickListener() {
-        @Override
-        public void onSingleClick(View v) {
-            switch (v.getId()) {
-                case R.id.kakaoCustomLogin :
+                case R.id.kakaoCustomLogin:
                     GLog.d("kakaoCustomLogin");
-                    if(session != null)
+                    if (session != null)
                         session.open(AuthType.KAKAO_LOGIN_ALL, SnsLoginActivity.this);
                     break;
 
 
-                case R.id.kakaoCustomLogout :
+                case R.id.kakaoCustomLogout:
                     GLog.d("kakaoCustomLogout");
                     kakaoCustomLogin.setVisibility(View.VISIBLE);
                     kakaoCustomLogout.setVisibility(View.GONE);
@@ -227,6 +211,12 @@ public class SnsLoginActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_LONG).show();
                         }
                     });
+                    break;
+
+                case R.id.naverLoginButton :
+                    break;
+
+                case R.id.naverLogoutButton:
                     break;
             }
         }

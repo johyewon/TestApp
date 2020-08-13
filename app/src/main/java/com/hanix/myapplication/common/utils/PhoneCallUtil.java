@@ -27,9 +27,6 @@ public class PhoneCallUtil {
 
                 case TelephonyManager.CALL_STATE_OFFHOOK :
                     // 통화중
-                    isCalling = true;
-                    break;
-
                 case TelephonyManager.CALL_STATE_RINGING :
                     // 전화 벨이 울릴 때
                     isCalling = true;

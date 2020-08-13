@@ -29,13 +29,13 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="#FFE600"
-            android:drawableLeft="@drawable/kakao"
+            android:drawableStart="@drawable/kakao"
             android:drawablePadding="15dp"
             android:fontFamily="@font/nanumgothic"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:stateListAnimator="@null"
-            android:text="카카오로 로그인"
+            android:text="@string/kakao_login"
             android:textStyle="bold" />
 
         <Button
@@ -45,13 +45,13 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="#FFE600"
-            android:drawableLeft="@drawable/kakao"
+            android:drawableStart="@drawable/kakao"
             android:drawablePadding="15dp"
             android:fontFamily="@font/nanumgothic"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:stateListAnimator="@null"
-            android:text="카카오 로그아웃"
+            android:text="@string/kakao_logout"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -91,7 +91,8 @@
             android:fontFamily="@font/nanumgothic"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="구글 로그아웃" />
+            android:text="@string/google_logout"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 
@@ -127,12 +128,14 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@color/white"
-            android:drawableLeft="@drawable/naver_logo"
+            android:drawableStart="@drawable/naver_logo"
             android:fontFamily="@font/nanumgothic"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="네이버 로그아웃"
-            android:textColor="#4FA42B" />
+            android:text="@string/naver_logout"
+            android:textColor="#4FA42B"
+            android:textSize="11sp"
+            tools:ignore="SmallSp" />
 
     </LinearLayout>
     <ImageView

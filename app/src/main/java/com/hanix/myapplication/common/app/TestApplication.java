@@ -1,7 +1,6 @@
 package com.hanix.myapplication.common.app;
 
 import android.app.Activity;
-import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.multidex.MultiDexApplication;
@@ -12,7 +11,6 @@ import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
-import com.nhn.android.naverlogin.OAuthLogin;
 
 import java.io.File;
 
@@ -22,7 +20,11 @@ import java.io.File;
 public class TestApplication extends MultiDexApplication {
 
     private static TestApplication instance;
-    public static TestApplication getInstance() { return instance; }
+
+    public static TestApplication getInstance() {
+        return instance;
+    }
+
     //로그 표시를 위한 디버그 모드인지를 판별한다.
     public boolean isDebuggable = false;
     //앱 Crash 에러 로그가 저장된 경로(cache 디렉토리)
@@ -59,7 +61,7 @@ public class TestApplication extends MultiDexApplication {
     }
 
     public void finishApp(Activity activity) {
-        if(activity.isTaskRoot()) {
+        if (activity.isTaskRoot()) {
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(0);
         } else {
@@ -67,14 +69,14 @@ public class TestApplication extends MultiDexApplication {
         }
     }
 
-    public class KakaoSDKAdapter extends KakaoAdapter {
+    public static class KakaoSDKAdapter extends KakaoAdapter {
 
         @Override
         public ISessionConfig getSessionConfig() {
             return new ISessionConfig() {
                 @Override
                 public AuthType[] getAuthTypes() {
-                    return new AuthType[] { AuthType.KAKAO_LOGIN_ALL};
+                    return new AuthType[]{AuthType.KAKAO_LOGIN_ALL};
                 }
 
                 @Override
@@ -102,12 +104,7 @@ public class TestApplication extends MultiDexApplication {
 
         @Override
         public IApplicationConfig getApplicationConfig() {
-            return new IApplicationConfig() {
-                @Override
-                public Context getApplicationContext() {
-                    return TestApplication.getInstance();
-                }
-            };
+            return TestApplication::getInstance;
         }
     }
 }

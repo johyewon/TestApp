@@ -36,38 +36,37 @@ import com.hanix.myapplication.view.MainActivity;
 import java.io.BufferedInputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Objects;
 
 public class MyFcmMessageService extends FirebaseMessagingService {
 
     private String title, body, imgUrl = "";
-    private Intent resultIntent;
 
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-        FirebaseMessaging.getInstance().subscribeToTopic("CastingBox");
+        FirebaseMessaging.getInstance().subscribeToTopic("TestApp");
         GLog.d("Firebase Instance Id Service : " + s);
-        PrefUtil.getInstance(this).setFcmTokenId(s);
+        PrefUtil.setFcmTokenId(getApplicationContext(), s);
     }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        if(remoteMessage != null && remoteMessage.getData().size() > 0) {
-
-            if(true) {
-                sceduleJob();
+        if (remoteMessage.getData().size() > 0) {
+            if (true) {
+                scheduleJob();
             } else {
                 handleNow();
             }
         }
 
-        if(remoteMessage.getNotification() != null) {
+        if (remoteMessage.getNotification() != null) {
             GLog.d("Message Notification Body : " + remoteMessage.getNotification().getColor());
             GLog.d("Message Notification Body : " + remoteMessage.getNotification().getIcon());
             GLog.d("Message Notification Body : " + remoteMessage.getNotification().getTitle());
             GLog.d("Message Notification Body : " + remoteMessage.getNotification().getBody());
 
-            if(remoteMessage.getData().get("body") != null && remoteMessage.getData().get("body").length() > 0) {
+            if (remoteMessage.getData().get("body") != null && Objects.requireNonNull(remoteMessage.getData().get("body")).length() > 0) {
                 title = remoteMessage.getData().get("title");
                 body = remoteMessage.getData().get("body");
                 imgUrl = remoteMessage.getData().get("imgUrl");
@@ -80,7 +79,7 @@ public class MyFcmMessageService extends FirebaseMessagingService {
         }
     }
 
-    private void sceduleJob() {
+    private void scheduleJob() {
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         Job myJob = dispatcher.newJobBuilder()
                 .setService(MyJobService.class)
@@ -93,11 +92,14 @@ public class MyFcmMessageService extends FirebaseMessagingService {
         GLog.d("Short lived task is done.");
     }
 
-    /** 메시지가 수신되었을 때 실행되는 메소드**/
+    /**
+     * 메시지가 수신되었을 때 실행되는 메소드
+     **/
     private void sendNotification() {
 
-        // 어플 실행 중인지 확인해서 실행 중이면 Main으로 보내기
-        if(AppUtil.isAppRunning(this)) {
+        // 어플 실행 중인지 확인해서 실행 중이면 Main 으로 보내기
+        Intent resultIntent;
+        if (AppUtil.isAppRunning(this)) {
             resultIntent = new Intent(this, MainActivity.class);
         } else {
             resultIntent = new Intent(this, AppIntro.class);
@@ -114,13 +116,13 @@ public class MyFcmMessageService extends FirebaseMessagingService {
 
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.alert_msg_layout);
         remoteViews.setImageViewResource(R.id.alertIcon, R.drawable.ic_launcher_foreground);
-        if(title != null && title.length() > 0)
+        if (title != null && title.length() > 0)
             remoteViews.setTextViewText(R.id.alertTitle, title);
 
-        if(body != null && body.length() > 0)
+        if (body != null && body.length() > 0)
             remoteViews.setTextViewText(R.id.alertContent, body);
 
-        if(imgUrl.equals("") && imgUrl.length() == 0) {
+        if (imgUrl.equals("")) {
             remoteViews.setViewVisibility(R.id.alertSendImg, View.GONE);
         } else {
             remoteViews.setViewVisibility(R.id.alertSendImg, View.VISIBLE);
@@ -154,30 +156,30 @@ public class MyFcmMessageService extends FirebaseMessagingService {
                 .setFullScreenIntent(pendingIntent, true)
                 .setPriority(Notification.PRIORITY_HIGH);
 
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if(Build.VERSION.SDK_INT  >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId, channel_nm, NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("Casting Box");
             channel.enableLights(true);
             channel.enableVibration(true);
             channel.setShowBadge(true);
             channel.setVibrationPattern(new long[]{100, 200, 100, 200});
-            if(notificationManager != null )
+            if (notificationManager != null)
                 notificationManager.createNotificationChannel(channel);
 
             notiBuilder.setNumber(100);
             notiBuilder.setChannelId(channelId);
         }
 
-        PowerManager  pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if(pm != null) {
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (pm != null) {
             @SuppressLint("InvalidWakeLockTag")
-            WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "CastingBox");
+            WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "TestApp");
             wakeLock.acquire(3000);
         }
 
-        if(notificationManager != null) {
+        if (notificationManager != null) {
             notificationManager.notify(0, notiBuilder.build());
         }
     }

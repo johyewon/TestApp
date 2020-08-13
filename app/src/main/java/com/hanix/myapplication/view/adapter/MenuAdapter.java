@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hanix.myapplication.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
@@ -23,24 +22,17 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
     }
 
     private ItemClick itemClick;
+
     public void setItemClick(ItemClick itemClick) {
         this.itemClick = itemClick;
     }
 
     Context context;
-    List<String> items = new ArrayList<>();
+    List<String> items;
 
     public MenuAdapter(List<String> items, Context context) {
         this.items = items;
         this.context = context;
-    }
-
-    public void addItem(String item) {
-        items.add(item);
-    }
-
-    public void resetItem() {
-        items.clear();
     }
 
     public static class Holder extends RecyclerView.ViewHolder {
@@ -68,20 +60,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
         holder.menuName.setText(items.get(i));
 
         final int num = i;
-        holder.menuLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(itemClick != null)
-                    itemClick.onClick(view, num);
-            }
+        holder.menuLayout.setOnClickListener((view) -> {
+            if (itemClick != null)
+                itemClick.onClick(view, num);
         });
 
-        holder.menuName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(itemClick != null)
-                    itemClick.onClick(view, num);
-            }
+        holder.menuName.setOnClickListener((view) -> {
+            if (itemClick != null)
+                itemClick.onClick(view, num);
         });
     }
 
@@ -90,6 +76,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
         return items.size();
     }
 
-    public Object getItem(int position) { return items.get(position); }
+    public Object getItem(int position) {
+        return items.get(position);
+    }
 
 }

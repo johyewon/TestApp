@@ -11,42 +11,33 @@ public class SnackBarUtil {
 
     private static Snackbar mSnackbar;
 
-    public static void hideSnackbar () {
-        if(mSnackbar != null) {
+    public static void hideSnackbar() {
+        if (mSnackbar != null) {
             GLog.i("Snackbar hide true!");
             mSnackbar.dismiss();
         }
     }
 
     public static void showSnackbar(final View view, final String msg, final int length) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                hideSnackbar();
-                mSnackbar = Snackbar.make(view, msg, length);
-                mSnackbar.show();
-            }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            hideSnackbar();
+            mSnackbar = Snackbar.make(view, msg, length);
+            mSnackbar.show();
         });
     }
 
-   public static void showSnackbarClick (final View view, final String msg, final int length, String clickMsg,View.OnClickListener clickListener) {
+    public static void showSnackbarClick(final View view, final String msg, final int length, String clickMsg, View.OnClickListener clickListener) {
         hideSnackbar();
 
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                hideSnackbar();
-                if(clickListener == null) {
-                    mSnackbar = Snackbar.make(view, msg, length).setAction(clickMsg, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) { mSnackbar.dismiss(); }
-                    });
-                } else {
-                    mSnackbar = Snackbar.make(view, msg, length).setAction(clickMsg, clickListener);
-                }
-                mSnackbar.show();
+        new Handler(Looper.getMainLooper()).post(() -> {
+            hideSnackbar();
+            if (clickListener == null) {
+                mSnackbar = Snackbar.make(view, msg, length).setAction(clickMsg, (v) -> mSnackbar.dismiss());
+            } else {
+                mSnackbar = Snackbar.make(view, msg, length).setAction(clickMsg, clickListener);
             }
+            mSnackbar.show();
         });
-   }
+    }
 
 }

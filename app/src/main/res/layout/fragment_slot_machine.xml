@@ -27,8 +27,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/transparent"
-            android:foregroundGravity="center"
-            android:outlineAmbientShadowColor="@color/transparent" />
+            android:foregroundGravity="center" />
 
         <com.hanix.myapplication.view.widget.wheel.WheelView
             android:id="@+id/mainSlot2"
@@ -37,8 +36,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/transparent"
-            android:foregroundGravity="center"
-            android:outlineAmbientShadowColor="@color/transparent" />
+            android:foregroundGravity="center" />
 
         <com.hanix.myapplication.view.widget.wheel.WheelView
             android:id="@+id/mainSlot3"
@@ -47,9 +45,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/transparent"
-            android:foregroundGravity="center"
-            android:outlineAmbientShadowColor="@color/transparent" />
-
+            android:foregroundGravity="center"/>
     </LinearLayout>
 
     <ImageView

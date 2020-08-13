@@ -6,13 +6,13 @@ import android.view.ViewGroup;
 
 public interface WheelViewAdapter {
 
-    public int getItemsCount();
+    int getItemsCount();
 
-    public View getItem(int index, View convertView, ViewGroup parent);
+    View getItem(int index, View convertView, ViewGroup parent);
 
-    public View getEmptyItem(View convertView, ViewGroup parent);
+    View getEmptyItem(View convertView, ViewGroup parent);
 
-    public void registerDataSetObserver(DataSetObserver observer);
+    void registerDataSetObserver(DataSetObserver observer);
 
     void unregisterDataSetObserver(DataSetObserver observer);
 

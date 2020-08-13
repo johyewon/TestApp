@@ -2,7 +2,6 @@ package com.hanix.myapplication.view;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -35,10 +34,10 @@ import com.hanix.myapplication.view.slot.SnsLoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -102,9 +101,8 @@ public class MainActivity extends AppCompatActivity {
             boolean checkResult = false;
             String resultMsg = "";
 
-            for(int i = 0; i > grantResults.length; i++) {
+            for(int i = 0; i < grantResults.length; i++) {
                 int result = grantResults[i];
-
                 if(result != PackageManager.PERMISSION_GRANTED) {
                     checkResult = true;
                     resultMsg = permissions[i];
@@ -115,10 +113,7 @@ public class MainActivity extends AppCompatActivity {
             if(checkResult) {
                 String errMsg = resultMsg + " 권한이 거부되어 앱을 실행할 수 없습니다. 설정에서 권한을 허용하고 다시 실행해 주십시오.";
                 GLog.d(errMsg);
-                DlgUtil.showConfirmDlg(this, errMsg, false, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {}
-                });
+                DlgUtil.showConfirmDlg(this, errMsg, false, (dialogInterface, i) -> {});
             }
         }
     }
@@ -126,13 +121,8 @@ public class MainActivity extends AppCompatActivity {
     private OnSingleClickListener mainClick = new OnSingleClickListener() {
         @Override
         public void onSingleClick(View v) {
-            switch (v.getId()) {
-                case R.id.menu:
-                    showHamburger();
-                    break;
-
-                default:
-                    break;
+            if (v.getId() == R.id.menu) {
+                showHamburger();
             }
         }
     };
@@ -140,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     private void showHamburger() {
         Dialog hamburger = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         hamburger.setContentView(R.layout.dialog_tab_menu);
-        hamburger.getWindow().getAttributes().windowAnimations = R.style.SlideLeftStyle;
+        Objects.requireNonNull(hamburger.getWindow()).getAttributes().windowAnimations = R.style.SlideLeftStyle;
         hamburger.getWindow().setBackgroundDrawableResource(R.color.transparent);
 
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -156,12 +146,9 @@ public class MainActivity extends AppCompatActivity {
         items.add("카지노 룰렛 휠");
         items.add("SNS 로그인");
         menuAdapter = new MenuAdapter(items, getApplicationContext());
-        menuAdapter.setItemClick(new MenuAdapter.ItemClick() {
-            @Override
-            public void onClick(View view, int position) {
-                hamburger.dismiss();
-                setContainer(String.valueOf(menuAdapter.getItem(position)));
-            }
+        menuAdapter.setItemClick((view, position) -> {
+            hamburger.dismiss();
+            setContainer(String.valueOf(menuAdapter.getItem(position)));
         });
         tabSlotRecyclerView.setAdapter(menuAdapter);
         tabSlotRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -175,11 +162,12 @@ public class MainActivity extends AppCompatActivity {
         switch (value) {
             case "카지노 룰렛 휠" :
                 Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
-                if(transaction != null)
+                if(transaction != null) {
                     transaction = fragmentManager.beginTransaction();
-                if(fragment != null)
-                    transaction.remove(fragment);
-                transaction.replace(R.id.container, slotMachineFragment).commitAllowingStateLoss();
+                    if(fragment != null)
+                        transaction.remove(fragment);
+                    transaction.replace(R.id.container, slotMachineFragment).commitAllowingStateLoss();
+                }
                 break;
 
             case "SNS 로그인" :

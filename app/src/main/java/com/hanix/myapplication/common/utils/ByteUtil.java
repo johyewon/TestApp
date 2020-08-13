@@ -20,7 +20,7 @@ public class ByteUtil {
             return null;
         }
 
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         for (byte b : bytes) {
             result.append(Integer.toString((b & 0xF0) >> 4, 16));
             result.append(Integer.toString(b & 0x0F, 16));
@@ -30,7 +30,7 @@ public class ByteUtil {
 
     /**
      * <p>8, 10, 16진수 문자열을 바이트 배열로 변환한다.</p>
-     * <p>8, 10진수인 경우는 문자열의 3자리가, 16진수인 경우는 2자리가, 하나의 byte로 바뀐다.</p>
+     * <p>8, 10진수인 경우는 문자열의 3자리가, 16진수인 경우는 2자리가, 하나의 byte 로 바뀐다.</p>
      *
      * <pre>
      * ByteUtils.toBytes(null)     = null
@@ -43,7 +43,7 @@ public class ByteUtil {
      * @return
      * @throws NumberFormatException
      */
-    public static byte[] toBytes(String digits, int radix) throws IllegalArgumentException, NumberFormatException {
+    public static byte[] toBytes(String digits, int radix) throws IllegalArgumentException {
         if (digits == null) {
             return null;
         }
@@ -66,7 +66,7 @@ public class ByteUtil {
 
     /**
      * <p>16진수 문자열을 바이트 배열로 변환한다.</p>
-     * <p>문자열의 2자리가 하나의 byte로 바뀐다.</p>
+     * <p>문자열의 2자리가 하나의 byte 로 바뀐다.</p>
      *
      * <pre>
      * ByteUtils.toBytesFromHexString(null)     = null
@@ -77,9 +77,8 @@ public class ByteUtil {
      * @param digits 16진수 문자열
      * @return
      * @throws NumberFormatException
-     * @see HexUtils.toBytes( String )
      */
-    public static byte[] toBytesFromHexString(String digits) throws IllegalArgumentException, NumberFormatException {
+    public static byte[] toBytesFromHexString(String digits) throws IllegalArgumentException {
         if (digits == null) {
             return null;
         }

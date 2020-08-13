@@ -8,8 +8,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.hanix.myapplication.R;
-import com.hanix.myapplication.view.widget.wheel.adapter.NumericWheelAdapter;
 import com.hanix.myapplication.view.widget.wheel.adapter.DayArrayAdapter;
+import com.hanix.myapplication.view.widget.wheel.adapter.NumericWheelAdapter;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -29,33 +29,30 @@ public class DateTimeWheel extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.date_time_wheel, this, true);
 
-        final WheelView hours = (WheelView) findViewById(R.id.hour);
+        final WheelView hours = findViewById(R.id.hour);
         NumericWheelAdapter hourAdapter = new NumericWheelAdapter(context, 0, 23, "%2d");
         hourAdapter.setItemResource(R.layout.wheel_text_item);
         hourAdapter.setItemTextResource(R.id.text);
         hours.setViewAdapter(hourAdapter);
         hours.setCyclic(true);
 
-        final WheelView min = (WheelView) findViewById(R.id.mins);
+        final WheelView min = findViewById(R.id.mins);
         NumericWheelAdapter minAdapter = new NumericWheelAdapter(context, 0, 59, "%02d");
         minAdapter.setItemResource(R.layout.wheel_text_item);
         minAdapter.setItemTextResource(R.id.text);
         min.setViewAdapter(minAdapter);
         min.setCyclic(true);
 
-        min.addChangingListener(new OnWheelChangedListener() {
-            @Override
-            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+        min.addChangingListener((wheel, oldValue, newValue) -> {
                 calendar.add(Calendar.MINUTE, newValue - oldValue);
 
                 fireTimeChanged(calendar.getTimeInMillis());
-            }
         });
 
         hours.setCurrentItem(calendar.get(Calendar.HOUR));
         min.setCurrentItem(calendar.get(Calendar.MINUTE));
 
-        final WheelView day = (WheelView) findViewById(R.id.day);
+        final WheelView day = findViewById(R.id.day);
         day.setViewAdapter(new DayArrayAdapter(context, calendar));
         day.setCyclic(true);
     }

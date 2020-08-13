@@ -21,7 +21,7 @@
         android:layout_below="@+id/progressBar1"
         android:layout_centerHorizontal="true"
         android:includeFontPadding="false"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"

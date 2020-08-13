@@ -1,7 +1,10 @@
 package com.hanix.myapplication.view.web;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
@@ -14,7 +17,6 @@ import android.webkit.WebView;
 
 import androidx.annotation.Nullable;
 
-
 import com.hanix.myapplication.common.app.GLog;
 import com.hanix.myapplication.view.MainActivity;
 
@@ -23,16 +25,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class CustomWebChromeClient extends WebChromeClient {
 
     // 카메라 시작
-
     private static final int INPUT_FILE_REQUEST_CODE = 1;
-    private static final int FILECHOOSER_RESULTCODE = 1;
+    private static final int FILE_CHOOSER_RESULT_CODE = 1;
 
-    private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mFilePathCallback;
+    private ValueCallback<Uri> mUploadMessage;
     private Uri mCaptureImageURI = null;
     private String mCameraPhotoPath;
 
@@ -75,9 +75,8 @@ public class CustomWebChromeClient extends WebChromeClient {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePictureIntent.resolveActivity(mActivity.getPackageManager()) != null ) {
-            File photoFile = null;
             try {
-                photoFile = createImageFile();
+                File file = createImageFile();
                 takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
             } catch (IOException e) {
                 GLog.e(e.getMessage(), e);
@@ -109,13 +108,13 @@ public class CustomWebChromeClient extends WebChromeClient {
 
         mUploadMessage = uploadMsg;
 
-        File imageStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Base Project");
+        File imageStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "TestApp");
 
         if(!imageStorageDir.exists()) {
             imageStorageDir.mkdir();
         }
 
-        File file = new File(imageStorageDir +  File.separator  + "IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
+        File file = new File(imageStorageDir +  File.separator  + "IMG_" + System.currentTimeMillis() + ".jpg");
 
         final Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraPhotoPath);
@@ -127,7 +126,7 @@ public class CustomWebChromeClient extends WebChromeClient {
         Intent chooserIntent = Intent.createChooser(i, "Image Chooser");
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Parcelable[] {captureIntent});
 
-        mActivity.startActivityForResult(chooserIntent, FILECHOOSER_RESULTCODE);
+        mActivity.startActivityForResult(chooserIntent, FILE_CHOOSER_RESULT_CODE);
     }
 
     public void openFileChooser(ValueCallback<Uri> uploadMsg)  {
@@ -139,9 +138,11 @@ public class CustomWebChromeClient extends WebChromeClient {
     }
 
     private File createImageFile() throws IOException {
+        @SuppressLint("SimpleDateFormat")
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir  = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
@@ -154,59 +155,56 @@ public class CustomWebChromeClient extends WebChromeClient {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // TODO : 웹뷰 업로드 및 다운로드 시 onActivityResult에 추가해야 함
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            if(requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
+        // TODO : 웹뷰 업로드 및 다운로드 시 onActivityResult 에 추가해야 함
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
 //                super.onActivityResult(requestCode, resultCode, data);
-//                return;
-//            }
-//        }
-//
-//        Uri[] results = null;
-//
-//        if(resultCode == Activity.RESULT_OK) {
-//            if (data != null) {
-//                if (mCameraPhotoPath != null) {
-//                    results = new Uri[]{Uri.parse(mCameraPhotoPath)};
-//                } else {
-//                    String dataString = data.getDataString();
-//                    if (dataString != null) {
-//                        results = new Uri[]{Uri.parse(dataString)};
-//                    }
-//                }
-//            }
-//
-//            mFilePathCallback.onReceiveValue(results);
-//            mFilePathCallback = null;
-//
-//        } else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-//
-//            if(requestCode != FILECHOOSER_RESULTCODE || mUploadMessage == null) {
+                return;
+            }
+        }
+
+        Uri[] results = null;
+
+        if(resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                if (mCameraPhotoPath != null) {
+                    results = new Uri[]{Uri.parse(mCameraPhotoPath)};
+                } else {
+                    String dataString = data.getDataString();
+                    if (dataString != null) {
+                        results = new Uri[]{Uri.parse(dataString)};
+                    }
+                }
+            }
+
+            mFilePathCallback.onReceiveValue(results);
+            mFilePathCallback = null;
+
+        } else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+
+            if(requestCode != FILE_CHOOSER_RESULT_CODE || mUploadMessage == null) {
 //                super.onActivityResult(requestCode, resultCode, data);
-//                return;
-//            }
-//
-//            if(requestCode == FILECHOOSER_RESULTCODE) {
-//                if(null == this.mUploadMessage) {
-//                    return;
-//                }
-//
-//                Uri result = null;
-//
-//                try {
-//                    if(resultCode != Activity.RESULT_OK) {
-//                        result = null;
-//                    } else {
-//                        result = data == null ? mCaptureImageURI : data.getData();
-//                    }
-//                } catch (Exception e) {
-//                    GLog.e(e.getMessage(), e);
-//                }
-//
-//                mUploadMessage.onReceiveValue(result);
-//                mUploadMessage = null;
-//            }
-//        }
-//        return;
+                return;
+            }
+
+            if(requestCode == FILE_CHOOSER_RESULT_CODE) {
+                if(this.mUploadMessage == null) {
+                    return;
+                }
+
+                Uri result = null;
+
+                try {
+                    if(resultCode == Activity.RESULT_OK) {
+                        result = data == null ? mCaptureImageURI : data.getData();
+                    }
+                } catch (Exception e) {
+                    GLog.e(e.getMessage(), e);
+                }
+
+                mUploadMessage.onReceiveValue(result);
+                mUploadMessage = null;
+            }
+        }
     }
 }

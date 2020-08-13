@@ -1,5 +1,6 @@
 package com.hanix.myapplication.view.widget.wheel;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
@@ -50,9 +51,9 @@ public class WheelView extends View {
     private WheelRecycle recycle = new WheelRecycle(this);
 
     // Listener
-    private List<OnWheelChangedListener> changedListeners = new LinkedList<OnWheelChangedListener>();
-    private List<OnWheelClickedListener> clickedListeners = new LinkedList<OnWheelClickedListener>();
-    private List<OnWheelScrollListener> scrollListeners = new LinkedList<OnWheelScrollListener>();
+    private List<OnWheelChangedListener> changedListeners = new LinkedList<>();
+    private List<OnWheelClickedListener> clickedListeners = new LinkedList<>();
+    private List<OnWheelScrollListener> scrollListeners = new LinkedList<>();
 
     public WheelView(Context context) {
         super(context);
@@ -70,7 +71,7 @@ public class WheelView extends View {
     }
 
     private void initData(Context context) {
-        scroller = new WheelScroller(getContext(), scrollingListener);
+        scroller = new WheelScroller(context, scrollingListener);
     }
 
     WheelScroller.ScrollingListener scrollingListener = new WheelScroller.ScrollingListener() {
@@ -383,6 +384,7 @@ public class WheelView extends View {
         centerDrawable.draw(canvas);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(!isEnabled() || getViewAdapter() == null)

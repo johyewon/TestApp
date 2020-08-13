@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.hanix.myapplication.R;
 import com.hanix.myapplication.view.event.OnSingleClickListener;
 
-
 public class NetworkNotConnectionActivity extends AppCompatActivity {
 
     TextView networkTv;

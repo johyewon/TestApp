@@ -7,30 +7,21 @@ import android.net.Uri;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-
 import com.hanix.myapplication.common.app.GLog;
 import com.hanix.myapplication.view.MainActivity;
 
 import java.net.URISyntaxException;
 
-
 public class CustomWebViewClient extends WebViewClient {
 
     private MainActivity mActivity;
-    private boolean mIsFirstLoading;
-    private WebViewInterface mWebViewInterface;
-    private boolean mIsFirstLogout;
 
-    public CustomWebViewClient (MainActivity activity, WebViewInterface webViewInterface){
+    public CustomWebViewClient (MainActivity activity){
         this.mActivity = activity;
-        this.mIsFirstLoading = true;
-        this.mIsFirstLogout = true;
-        this.mWebViewInterface = webViewInterface;
     }
 
     // Load the url
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
         GLog.e("shouldOverrideUrlLoading: " + url);
 
         if(url.startsWith("tel:")) {
@@ -51,10 +42,12 @@ public class CustomWebViewClient extends WebViewClient {
                 //URI 문법 오류 시 처리 구간
                 e.printStackTrace();
             } catch (ActivityNotFoundException e) {
-                String packageName = intent.getPackage();
-                if (!packageName.equals("")) {
-                    // 앱이 설치되어 있지 않을 경우 구글마켓 이동
-                    mActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
+                if (intent != null) {
+                    String packageName = intent.getPackage();
+                    if (packageName != null && !packageName.equals("")) {
+                        // 앱이 설치되어 있지 않을 경우 구글마켓 이동
+                        mActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
+                    }
                 }
             }
 

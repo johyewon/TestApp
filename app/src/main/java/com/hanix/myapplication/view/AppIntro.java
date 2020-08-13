@@ -17,20 +17,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.hanix.myapplication.R;
 import com.hanix.myapplication.common.app.GLog;
-import com.hanix.myapplication.common.constants.AppConstants;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import static com.kakao.util.helper.Utility.getPackageInfo;
 
-
 public class AppIntro extends AppCompatActivity {
 
     public SharedPreferences sf;
 
-    private static final long SPLASHTIME = 2000;
-    private static final int STOPSPLASH = 0;
+    private static final long SPLASH_TIME = 2000;
+    private static final int STOP_SPLASH = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +37,6 @@ public class AppIntro extends AppCompatActivity {
         setContentView(R.layout.activity_app_intro);
         getIntent().addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        // new VersionCheckTask(this, mVersionCheckTaskCallbackInterface).execute(); // 버전 체크scro
         GLog.d(getKeyHash(getApplicationContext()));
         sf = getSharedPreferences("Pref", MODE_PRIVATE);
     }
@@ -51,15 +48,11 @@ public class AppIntro extends AppCompatActivity {
             super.handleMessage(msg);
 
             Intent intent;
-            boolean isFirstRun = sf.getBoolean(AppConstants.isFirstRun, true);
-            switch (msg.what) {
-                case STOPSPLASH:
-                    intent = new Intent(AppIntro.this, MainActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in_activity, R.anim.hold_activity);
-                    finish();
-                    break;
-
+            if (msg.what == STOP_SPLASH) {
+                intent = new Intent(AppIntro.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in_activity, R.anim.hold_activity);
+                finish();
             }
         }
     };
@@ -69,8 +62,8 @@ public class AppIntro extends AppCompatActivity {
         super.onResume();
 
         Message msg = new Message();
-        msg.what = STOPSPLASH;
-        handler.sendMessageDelayed(msg, SPLASHTIME);
+        msg.what = STOP_SPLASH;
+        handler.sendMessageDelayed(msg, SPLASH_TIME);
     }
 
     public static String getKeyHash(final Context context) {

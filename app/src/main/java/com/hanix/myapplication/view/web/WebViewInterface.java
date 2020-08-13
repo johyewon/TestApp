@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-import com.hanix.myapplication.common.beans.UserBean;
 import com.hanix.myapplication.common.utils.DeviceUtil;
 
 public class WebViewInterface {
@@ -17,15 +16,14 @@ public class WebViewInterface {
 
     /**
      * 생성자.
+     *
      * @param activity : context
-     * @param view : 적용될 웹뷰
+     * @param view     : 적용될 웹뷰
      */
     public WebViewInterface(Activity activity, WebView view) {
         mContext = activity;
         mWebView = view;
     }
-
-
 
     /**
      * 로그인 정보저장
@@ -33,13 +31,10 @@ public class WebViewInterface {
      */
     @JavascriptInterface
     public void appSetLoginInfo(String mobileNo, String pw) {
-        if( TextUtils.isEmpty(mobileNo) || TextUtils.isEmpty(pw) ) return;
+        if (TextUtils.isEmpty(mobileNo) || TextUtils.isEmpty(pw)) return;
 
-        UserBean userBean = new UserBean();
-        //기기에 저장 -- 나중에 정의
-//        PrefUtil.getInstance(mContext).setUserBean(userBean);
+//        UserBean userBean = new UserBean();
     }
-
 
 
     /**
@@ -47,19 +42,11 @@ public class WebViewInterface {
      * JS -> App
      */
     @JavascriptInterface
-    public void appGetVersion(){
-        // Thread를 생성한다.
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // runOnUiThread를 추가하고 그 안에 UI작업을 한다.
-                mContext.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mWebView.loadUrl("javascript:appGetVersionResponse('"+ DeviceUtil.getSwVerName(mContext) +"')");
-                    }
-                });
-            }
+    public void appGetVersion() {
+        // Thread 를 생성한다.
+        new Thread(() -> {
+            // runOnUiThread 를 추가하고 그 안에 UI 작업을 한다.
+            mContext.runOnUiThread(() -> mWebView.loadUrl("javascript:appGetVersionResponse('" + DeviceUtil.getSwVerName(mContext) + "')"));
         }).start();
     }
 
@@ -68,18 +55,10 @@ public class WebViewInterface {
      * 로그아웃 호출
      * App -> JS
      */
-    public void setUserSessionLogout(){
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // runOnUiThread를 추가하고 그 안에 UI작업을 한다.
-                mContext.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mWebView.loadUrl("javascript:doLogout()");
-                    }
-                });
-            }
+    public void setUserSessionLogout() {
+        new Handler().postDelayed(() -> {
+            // runOnUiThread 를 추가하고 그 안에 UI 작업을 한다.
+            mContext.runOnUiThread(() -> mWebView.loadUrl("javascript:doLogout()"));
         }, 500);
     }
 

@@ -6,15 +6,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.fragment.app.Fragment;
 
 import com.hanix.myapplication.R;
 import com.hanix.myapplication.common.app.GLog;
@@ -33,7 +31,7 @@ public class SlotMachineFragment extends Fragment {
     private boolean wheelScrolled = false;
     private boolean isWheelRunning = false;
 
-    private final int[] items1 = new int[] {
+    private final int[] items1 = new int[]{
             R.drawable.bear,
             R.drawable.cow,
             R.drawable.fox,
@@ -47,7 +45,7 @@ public class SlotMachineFragment extends Fragment {
             R.drawable.reindeer,
             R.drawable.whale
     };
-    private final int[] items2 = new int[] {
+    private final int[] items2 = new int[]{
             R.drawable.bat,
             R.drawable.bee,
             R.drawable.bird,
@@ -61,7 +59,7 @@ public class SlotMachineFragment extends Fragment {
             R.drawable.crocodile,
             R.drawable.duck
     };
-    private final int[] items3 = new int[] {
+    private final int[] items3 = new int[]{
             R.drawable.elephant,
             R.drawable.flamingo,
             R.drawable.frog,
@@ -76,7 +74,7 @@ public class SlotMachineFragment extends Fragment {
             R.drawable.panther
     };
 
-    static ViewGroup rootView;
+    ViewGroup rootView;
 
 
     @Override
@@ -88,13 +86,11 @@ public class SlotMachineFragment extends Fragment {
         initWheel(R.id.mainSlot2, items2);
         initWheel(R.id.mainSlot3, items3);
 
-        ImageView mix = (ImageView) rootView.findViewById(R.id.mainBt);
-        mix.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                isFirWheelStop = false;
-                isWheelRunning = true;
-                mixWheel(R.id.mainSlot1);
-            }
+        ImageView mix = rootView.findViewById(R.id.mainBt);
+        mix.setOnClickListener((v) -> {
+            isFirWheelStop = false;
+            isWheelRunning = true;
+            mixWheel(R.id.mainSlot1);
         });
         updateStatus();
 
@@ -105,31 +101,29 @@ public class SlotMachineFragment extends Fragment {
         public void onScrollingStarted(WheelView wheel) {
             wheelScrolled = true;
         }
+
         public void onScrollingFinished(WheelView wheel) {
             wheelScrolled = false;
             updateStatus();
         }
     };
 
-    private OnWheelChangedListener changedListener = new OnWheelChangedListener() {
-        public void onChanged(WheelView wheel, int oldValue, int newValue) {
-            if (!wheelScrolled) {
-                updateStatus();
-            }
-        }
+    private OnWheelChangedListener changedListener = (wheel, oldValue, newValue) -> {
+        if (!wheelScrolled)
+            updateStatus();
     };
 
     private void updateStatus() {
-        if(isWheelRunning) {
-            if(!isFirWheelStop)  {
+        if (isWheelRunning) {
+            if (!isFirWheelStop) {
                 isFirWheelStop = true;
                 isSecWheelStop = false;
                 mixWheel(R.id.mainSlot2);
-            } else if(!isSecWheelStop) {
+            } else if (!isSecWheelStop) {
                 isSecWheelStop = true;
                 isThrWheelStop = false;
                 mixWheel(R.id.mainSlot3);
-            } else if(!isThrWheelStop) {
+            } else if (!isThrWheelStop) {
                 isThrWheelStop = true;
                 isWheelRunning = false;
                 getResult();
@@ -145,21 +139,21 @@ public class SlotMachineFragment extends Fragment {
 
     private String result(int slot, int index) {
         String returnString = "";
-        if(slot == 1) {
+        if (slot == 1) {
             switch (index) {
-                case 0 :
+                case 0:
                     returnString = "곰";
                     break;
 
-                case 1 :
+                case 1:
                     returnString = "소";
                     break;
 
-                case 2 :
+                case 2:
                     returnString = "여우";
                     break;
 
-                case 3 :
+                case 3:
                     returnString = "사자";
                     break;
 
@@ -167,50 +161,50 @@ public class SlotMachineFragment extends Fragment {
                     returnString = "쥐";
                     break;
 
-                case 5 :
+                case 5:
                     returnString = "개";
                     break;
 
-                case 6 :
+                case 6:
                     returnString = "돌고래";
                     break;
 
-                case 7 :
+                case 7:
                     returnString = "코알라";
                     break;
 
-                case 8 :
+                case 8:
                     returnString = "북극곰";
                     break;
 
-                case 9 :
+                case 9:
                     returnString = "토끼";
                     break;
 
-                case 10 :
+                case 10:
                     returnString = "순록";
                     break;
 
-                case 11 :
+                case 11:
                     returnString = "고래";
                     break;
 
             }
-        } else if(slot == 2) {
+        } else if (slot == 2) {
             switch (index) {
-                case 0 :
+                case 0:
                     returnString = "박쥐";
                     break;
 
-                case 1 :
+                case 1:
                     returnString = "벌";
                     break;
 
-                case 2 :
+                case 2:
                     returnString = "새";
                     break;
 
-                case 3 :
+                case 3:
                     returnString = "나비";
                     break;
 
@@ -218,50 +212,50 @@ public class SlotMachineFragment extends Fragment {
                     returnString = "낙타";
                     break;
 
-                case 5 :
+                case 5:
                     returnString = "고양이";
                     break;
 
-                case 6 :
+                case 6:
                     returnString = "카멜레온";
                     break;
 
-                case 7 :
+                case 7:
                     returnString = "닭";
                     break;
 
-                case 8 :
+                case 8:
                     returnString = "니모";
                     break;
 
-                case 9 :
+                case 9:
                     returnString = "게";
                     break;
 
-                case 10 :
+                case 10:
                     returnString = "악어";
                     break;
 
-                case 11 :
+                case 11:
                     returnString = "오리";
                     break;
 
             }
         } else {
             switch (index) {
-                case 0 :
+                case 0:
                     returnString = "코끼리";
                     break;
 
-                case 1 :
+                case 1:
                     returnString = "플라밍고";
                     break;
 
-                case 2 :
+                case 2:
                     returnString = "개구리";
                     break;
 
-                case 3 :
+                case 3:
                     returnString = "기린";
                     break;
 
@@ -269,31 +263,31 @@ public class SlotMachineFragment extends Fragment {
                     returnString = "하마";
                     break;
 
-                case 5 :
+                case 5:
                     returnString = "말";
                     break;
 
-                case 6 :
+                case 6:
                     returnString = "캥거루";
                     break;
 
-                case 7 :
+                case 7:
                     returnString = "라마";
                     break;
 
-                case 8 :
+                case 8:
                     returnString = "가오리";
                     break;
 
-                case 9 :
+                case 9:
                     returnString = "원숭이";
                     break;
 
-                case 10 :
+                case 10:
                     returnString = "부엉이";
                     break;
 
-                case 11 :
+                case 11:
                     returnString = "표범";
                     break;
 
@@ -304,17 +298,17 @@ public class SlotMachineFragment extends Fragment {
 
     private void initWheel(int id, int[] items) {
         WheelView wheel = getWheel(id);
-        if(items != null && items.length > 0) {
+        if (items != null && items.length > 0) {
             wheel.setViewAdapter(new SlotMachineAdapter(getContext(), items));
         }
-        wheel.setCurrentItem((int)(Math.random() * 10));
+        wheel.setCurrentItem((int) (Math.random() * 10));
         wheel.setVisibility(View.VISIBLE);
-        wheel.setPadding(5,5,5,5);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        wheel.setPadding(5, 5, 5, 5);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             wheel.setBackgroundColor(Color.TRANSPARENT);
             wheel.setForegroundGravity(Gravity.CENTER);
         }
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             wheel.setOutlineSpotShadowColor(Color.TRANSPARENT);
             wheel.setOutlineAmbientShadowColor(Color.TRANSPARENT);
         }
@@ -331,7 +325,7 @@ public class SlotMachineFragment extends Fragment {
 
     private void mixWheel(int id) {
         WheelView wheel = getWheel(id);
-        wheel.scroll(-350 + (int)(Math.random() * 50), 1500);
+        wheel.scroll(-350 + (int) (Math.random() * 50), 1500);
     }
 
     private static class SlotMachineAdapter extends AbstractWheelAdapter {
@@ -345,9 +339,9 @@ public class SlotMachineFragment extends Fragment {
         public SlotMachineAdapter(Context context, int[] items) {
             this.context = context;
             this.items = items;
-            images = new ArrayList<SoftReference<Bitmap>>(items.length);
+            images = new ArrayList<>(items.length);
             for (int id : items) {
-                images.add(new SoftReference<Bitmap>(loadImage(id)));
+                images.add(new SoftReference<>(loadImage(id)));
             }
         }
 
@@ -378,7 +372,7 @@ public class SlotMachineFragment extends Fragment {
             Bitmap bitmap = bitmapRef.get();
             if (bitmap == null) {
                 bitmap = loadImage(items[index]);
-                images.set(index, new SoftReference<Bitmap>(bitmap));
+                images.set(index, new SoftReference<>(bitmap));
             }
             img.setImageBitmap(bitmap);
 

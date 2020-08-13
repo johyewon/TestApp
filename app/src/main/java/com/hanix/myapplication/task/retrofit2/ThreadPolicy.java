@@ -5,7 +5,7 @@ import android.os.Build;
 import android.os.StrictMode;
 
 /**
- * 메인 UI에서 쓰레드 쓸 경우 NetworkOnMainThreadException 에러 방지
+ * 메인 UI 에서 쓰레드 쓸 경우 NetworkOnMainThreadException 에러 방지
  * 다중 이미지나 데이터가 큰 경우에 사용
  */
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)

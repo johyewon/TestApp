@@ -1,5 +1,7 @@
 package com.hanix.myapplication.common.utils;
 
+import java.util.Arrays;
+
 /**
  * 클래스명 : Base64Coder
  * 설명 : Base64Coding 을 담당하는 클래스
@@ -7,7 +9,7 @@ package com.hanix.myapplication.common.utils;
  */
 public class Base64Coder {
 
-    private static final String SYSTEMLINESEPARATOR = System.getProperty("line.separator");
+    private static final String SYSTEM_LINE_SEPARATOR = System.getProperty("line.separator");
     private static char[]    map1 = new char[64];
     static {
         int i=0;
@@ -25,9 +27,7 @@ public class Base64Coder {
 
     private static byte[]    map2 = new byte[128];
     static {
-        for (int i=0; i<map2.length; i++){
-            map2[i] = -1;
-        }
+        Arrays.fill(map2, (byte) -1);
         for (int i=0; i<64; i++){
             map2[map1[i]] = (byte)i;
         }
@@ -38,7 +38,7 @@ public class Base64Coder {
     }
 
     public static String encodeLines (byte[] in) {
-        return encodeLines(in, 0, in.length, 76, SYSTEMLINESEPARATOR);
+        return encodeLines(in, 0, in.length, 76, SYSTEM_LINE_SEPARATOR);
     }
 
     public static String encodeLines (byte[] in, int iOff, int iLen, int lineLen, String lineSeparator) {

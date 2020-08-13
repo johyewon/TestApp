@@ -56,16 +56,16 @@ public class Utils {
      * @param strArr
      * @return
      */
-    public static int[] getBubbleSort(String[] strArr) throws Exception {
+    public static int[] getBubbleSort(String[] strArr) {
 
-        int intArr[] = new int[strArr.length];
+        int[] intArr = new int[strArr.length];
 
         //str -> int
         for(int i=0; i<strArr.length; i++) {
             int naNum = 0;
             try {
                 naNum = Integer.parseInt( strArr[i].trim() );
-            } catch (Exception e) { }
+            } catch (Exception ignored) { }
             intArr[i] = naNum;
         }
 
@@ -147,7 +147,7 @@ public class Utils {
      * @return
      * @throws Throwable
      */
-    public static Bitmap retriveVideoFrameFromVideo(String videoPath) throws Throwable {
+    public static Bitmap retrieveVideoFrameFromVideo(String videoPath) throws Throwable {
         Bitmap bitmap = null;
         MediaMetadataRetriever mediaMetadataRetriever = null;
         try {
@@ -156,7 +156,7 @@ public class Utils {
             bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.getMessage());
+            throw new Throwable("Exception in retrieveVideoFrameFromVideo(String videoPath)" + e.getMessage());
         } finally {
             if (mediaMetadataRetriever != null) {
                 mediaMetadataRetriever.release();
@@ -172,9 +172,6 @@ public class Utils {
      * @return
      */
     public static Useage measureUnit(int size){
-        String unit = "";
-        int k = size;
-
         double m = size/1024;
         double g = size/1048576;
         double t = size/1073741824;
@@ -183,9 +180,9 @@ public class Utils {
 
         DecimalFormat dec = new DecimalFormat("0.0");
 
-        if (k >= 0) {
+        if (size >= 0) {
             useage.unit = "KB";
-            useage.useage = dec.format(k);
+            useage.useage = dec.format(size);
         } if (m > 0) {
             useage.unit = "MB";
             useage.useage = dec.format(m);
@@ -226,7 +223,7 @@ public class Utils {
             try {
                 size.x = (Integer) Display.class.getMethod("getRawWidth").invoke(display);
                 size.y = (Integer) Display.class.getMethod("getRawHeight").invoke(display);
-            } catch (IllegalAccessException e) {} catch (InvocationTargetException e) {} catch (NoSuchMethodException e) {}
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {}
         }
 
         return size;
@@ -239,9 +236,8 @@ public class Utils {
         win.getDecorView().getWindowVisibleDisplayFrame(rect);
         int statusBarHeight = rect.top;
         int contentViewTop = win.findViewById(Window.ID_ANDROID_CONTENT).getTop();
-        int titleBarHeight = contentViewTop - statusBarHeight;
 
-        return titleBarHeight;
+        return contentViewTop - statusBarHeight;
     }
 
 
@@ -268,7 +264,7 @@ public class Utils {
      */
     public static byte[] addPadding(byte[] source, int blockSize) {
         int paddingCnt = source.length % blockSize;
-        byte[] paddingResult = null;
+        byte[] paddingResult;
 
         if (paddingCnt != 0) {
             paddingResult = new byte[source.length + (blockSize - paddingCnt)];

@@ -1,5 +1,6 @@
 package com.hanix.myapplication.view.widget.wheel.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,8 @@ public class DayArrayAdapter extends AbstractWheelTextAdapter {
 
         View view = super.getItem(index, cachedView, parent);
 
-        TextView monthday = (TextView) view.findViewById(R.id.time2_monthday);
+        TextView monthday = view.findViewById(R.id.time2_monthday);
+        @SuppressLint("SimpleDateFormat")
         DateFormat format = new SimpleDateFormat("M/dd");
         monthday.setText(format.format(newCalendar.getTime()));
         monthday.setTextColor(0x00FFFFFF);

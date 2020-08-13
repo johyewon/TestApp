@@ -1,7 +1,7 @@
 package com.hanix.myapplication.common.utils;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
-
 
 import com.hanix.myapplication.common.app.GLog;
 
@@ -9,20 +9,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+@SuppressLint("SimpleDateFormat")
 public class DateTimes {
 
     public static final SimpleDateFormat DF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd");
-    public static final SimpleDateFormat DF_YYYY_MM_DD_HHMMSS = new SimpleDateFormat("yyyy-MM-dd HHmmss");
-    public static final SimpleDateFormat DF_YYYY_MM_DD_HH_MM_SS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static final SimpleDateFormat DF_YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
     public static final SimpleDateFormat DF_YYYYMMDDHHMMSS = new SimpleDateFormat("yyyyMMddHHmmss");
 
     /**
-     *
-     * @param inForm    입력 형식(ex : yyyy-MM-dd)
-     * @param outForm   출력 형식(ex : yyyy.MM.dd)
-     * @param inDate    입력일자
-     * @return          출력일자
+     * @param inForm  입력 형식(ex : yyyy-MM-dd)
+     * @param outForm 출력 형식(ex : yyyy.MM.dd)
+     * @param inDate  입력일자
+     * @return 출력일자
      */
     public static String parseDate(String inForm, String outForm, String inDate) {
 
@@ -43,6 +40,7 @@ public class DateTimes {
 
     /**
      * 입력받은 일자가 현재 일자보다 이전인지 여부를 확인
+     *
      * @param date 만료일자(YYYY-MM-DD)
      * @return true : 지남
      */
@@ -59,7 +57,7 @@ public class DateTimes {
             String form1 = DF_YYYY_MM_DD.format(new Date()); // 오늘일자
             String form2 = sf2.format(new Date());
 
-            long diff = DF_YYYY_MM_DD.parse(form2).getTime() -  DF_YYYY_MM_DD.parse(form1).getTime();
+            long diff = DF_YYYY_MM_DD.parse(form2).getTime() - DF_YYYY_MM_DD.parse(form1).getTime();
             ret = (int) (diff / 1000 / 60 / 60 / 24);
 
         } catch (Exception e) {
@@ -73,11 +71,11 @@ public class DateTimes {
      * 1 minute = 60 seconds
      * 1 hour = 60 x 60 = 3600
      * 1 day = 3600 x 24 = 86400
-     *
+     * <p>
      * SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hhmmss")
      * Date startDate = simpleDateFormat.parse("2019-04-02 173010")
      * Date endDate = simpleDateFormat.parse("2019-04-02 240000")
-     *
+     * <p>
      * ex)printDifference(startDate, endDate)
      */
     public static void printDifference(Date startDate, Date endDate) {
@@ -86,7 +84,7 @@ public class DateTimes {
         long different = endDate.getTime() - startDate.getTime();
 
         System.out.println("startDate : " + startDate);
-        System.out.println("endDate : "+ endDate);
+        System.out.println("endDate : " + endDate);
         System.out.println("different : " + different);
 
         long secondsInMilli = 1000;
@@ -115,18 +113,18 @@ public class DateTimes {
      * 현재날짜 기준으로 startDate 와 endDate 가 유효한 데이터 기간안에 있는지를 확인한다.
      *
      * @param fromDateStr ex) 20190322000000 (YYYYMMDDHHMMSS)
-     * @param toDateStr ex) 20190625235959 (YYYYMMDDHHMMSS)
+     * @param toDateStr   ex) 20190625235959 (YYYYMMDDHHMMSS)
      * @return true: 기간안에 있어 실행가능함.  false: 기간안에 없어 실행 불가능함.
      */
     public static boolean getIsExecutableDate(String fromDateStr, String toDateStr) {
         boolean rtnBool = false;
 
-        if( TextUtils.isEmpty(fromDateStr) || TextUtils.isEmpty(toDateStr) ) {
-            return rtnBool;
+        if (TextUtils.isEmpty(fromDateStr) || TextUtils.isEmpty(toDateStr)) {
+            return false;
         }
 
         try {
-            long diffMilli = -1;
+            long diffMilli;
             String todayStr = DF_YYYYMMDDHHMMSS.format(new Date());
             Date todayDt = DF_YYYYMMDDHHMMSS.parse(todayStr);
             Date fromDt = DF_YYYYMMDDHHMMSS.parse(fromDateStr);
@@ -134,13 +132,13 @@ public class DateTimes {
 
             //1.fromDate 는 오늘날짜보다 작거나 같아야 한다.
             diffMilli = todayDt.getTime() - fromDt.getTime();
-            if(diffMilli >= 0) {
+            if (diffMilli >= 0) {
                 rtnBool = true;
             }
 
             //2.toDate 는 오늘날자보다 크커나 같아야 한다.
             diffMilli = toDt.getTime() - todayDt.getTime();
-            if(diffMilli >= 0) {
+            if (diffMilli >= 0) {
                 rtnBool = true;
             }
 
@@ -153,9 +151,8 @@ public class DateTimes {
     }
 
     /**
-     *
-     * @param format    출력일자 폼 (yyyy-MM-dd)
-     * @param offset    금일기준 옵셋값(-1:하루전 0:금일 1:내일)
+     * @param format 출력일자 폼 (yyyy-MM-dd)
+     * @param offset 금일기준 옵셋값(-1:하루전 0:금일 1:내일)
      * @return
      */
     public static String moveDate(String format, int offset) {
@@ -167,13 +164,13 @@ public class DateTimes {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.DATE, offset);
-        String data = sdf.format(cal.getTime());
 
-        return data;
+        return sdf.format(cal.getTime());
     }
 
     /**
      * 파라미터로 넘겨준 날짜의 하루가 끝나는 시간을 넘겨준다.
+     *
      * @param date
      * @return
      */
@@ -189,6 +186,7 @@ public class DateTimes {
 
     /**
      * 파라미터로 넘겨준 날짜의 하루가 시작하는 시간을 넘겨준다.
+     *
      * @param date
      * @return
      */
@@ -224,7 +222,7 @@ public class DateTimes {
 
         String msg = elapsedDays + " days, " + elapsedHours + " hours, "
                 + elapsedMinutes + " minutes, " + elapsedSeconds + " seconds";
-        GLog.i( "다음작업 남은시간 ===> " + msg);
+        GLog.i("다음작업 남은시간 ===> " + msg);
 
         return msg;
     }
