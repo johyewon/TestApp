@@ -41,5 +41,6 @@
     <string name="kakao_logout">카카오 로그아웃</string>
     <string name="google_logout">Sing out</string>
     <string name="naver_logout">네이버 아이디 로그아웃</string>
+    <string name="find_address">주소 찾기</string>
 
 </resources>

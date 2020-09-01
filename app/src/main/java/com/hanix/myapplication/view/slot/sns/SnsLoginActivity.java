@@ -1,4 +1,4 @@
-package com.hanix.myapplication.view.slot;
+package com.hanix.myapplication.view.slot.sns;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,7 +27,6 @@ import com.hanix.myapplication.R;
 import com.hanix.myapplication.common.app.GLog;
 import com.hanix.myapplication.view.MainActivity;
 import com.hanix.myapplication.view.event.OnSingleClickListener;
-import com.hanix.myapplication.view.slot.sns.SessionCallback;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;

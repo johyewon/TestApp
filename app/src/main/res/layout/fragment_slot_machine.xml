@@ -5,7 +5,7 @@
     android:id="@+id/slotLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.slot.SlotMachineFragment">
+    tools:context=".view.slot.slotmachine.SlotMachineFragment">
 
     <LinearLayout
         android:id="@+id/mainSlotLayout"

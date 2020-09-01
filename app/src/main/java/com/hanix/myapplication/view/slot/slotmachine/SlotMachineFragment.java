@@ -1,4 +1,4 @@
-package com.hanix.myapplication.view.slot;
+package com.hanix.myapplication.view.slot.slotmachine;
 
 import android.content.Context;
 import android.graphics.Bitmap;

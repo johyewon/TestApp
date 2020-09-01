@@ -1,7 +1,6 @@
 package com.hanix.myapplication.view.slot.sns;
 
 import com.hanix.myapplication.common.app.GLog;
-import com.hanix.myapplication.view.slot.SnsLoginActivity;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;

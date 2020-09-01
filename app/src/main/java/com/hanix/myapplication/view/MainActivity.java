@@ -29,8 +29,9 @@ import com.hanix.myapplication.common.app.GLog;
 import com.hanix.myapplication.common.utils.DlgUtil;
 import com.hanix.myapplication.view.adapter.MenuAdapter;
 import com.hanix.myapplication.view.event.OnSingleClickListener;
-import com.hanix.myapplication.view.slot.SlotMachineFragment;
-import com.hanix.myapplication.view.slot.SnsLoginActivity;
+import com.hanix.myapplication.view.slot.kakaomap.MapTestFragment;
+import com.hanix.myapplication.view.slot.slotmachine.SlotMachineFragment;
+import com.hanix.myapplication.view.slot.sns.SnsLoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private SlotMachineFragment slotMachineFragment;
+    private MapTestFragment mapTestFragment;
 
     // BindView
     @BindView(R.id.menu)
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         slotMachineFragment = new SlotMachineFragment();
+        mapTestFragment = new MapTestFragment();
 
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container, slotMachineFragment).commitAllowingStateLoss();
@@ -145,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         items = new ArrayList<>();
         items.add("카지노 룰렛 휠");
         items.add("SNS 로그인");
+        items.add("카카오주소 API");
         menuAdapter = new MenuAdapter(items, getApplicationContext());
         menuAdapter.setItemClick((view, position) -> {
             hamburger.dismiss();
@@ -159,9 +163,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setContainer(String value) {
+        Fragment fragment;
         switch (value) {
             case "카지노 룰렛 휠" :
-                Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
+                fragment = fragmentManager.getPrimaryNavigationFragment();
                 if(transaction != null) {
                     transaction = fragmentManager.beginTransaction();
                     if(fragment != null)
@@ -174,6 +179,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, SnsLoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in_activity, R.anim.hold_activity);
+                break;
+
+            case "카카오주소 API":
+                fragment = fragmentManager.getPrimaryNavigationFragment();
+                if(transaction != null) {
+                    transaction = fragmentManager.beginTransaction();
+                    if(fragment != null)
+                        transaction.remove(fragment);
+                    transaction.replace(R.id.container, mapTestFragment).commitAllowingStateLoss();
+                }
                 break;
 
             default:
