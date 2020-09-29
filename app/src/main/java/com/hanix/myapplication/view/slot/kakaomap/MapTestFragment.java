@@ -2,37 +2,29 @@ package com.hanix.myapplication.view.slot.kakaomap;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.hanix.myapplication.R;
-import com.hanix.myapplication.common.app.GLog;
-import com.hanix.myapplication.view.event.OnSingleClickListener;
+import androidx.fragment.app.Fragment;
 
-import static android.app.Activity.RESULT_OK;
+import com.hanix.myapplication.R;
+import com.hanix.myapplication.view.event.OnSingleClickListener;
 
 public class MapTestFragment extends Fragment {
 
     private WebView mapWebView;
-    private static TextView mapTextView;
+    @SuppressLint("StaticFieldLeak")
+    static TextView mapTextView;
     private Button mapFindBtn;
     static Dialog dialog;
 
@@ -88,7 +80,6 @@ public class MapTestFragment extends Fragment {
         mapWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-
                 mapWebView.loadUrl("javascript:sample2_execDaumPostcode();");
             }
         });
