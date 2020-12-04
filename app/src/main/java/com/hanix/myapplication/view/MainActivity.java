@@ -30,6 +30,7 @@ import com.hanix.myapplication.common.utils.DlgUtil;
 import com.hanix.myapplication.view.adapter.MenuAdapter;
 import com.hanix.myapplication.view.event.OnSingleClickListener;
 import com.hanix.myapplication.view.slot.kakaomap.MapTestFragment;
+import com.hanix.myapplication.view.slot.local.LocalIPFragment;
 import com.hanix.myapplication.view.slot.slotmachine.SlotMachineFragment;
 import com.hanix.myapplication.view.slot.sns.SnsLoginActivity;
 
@@ -43,29 +44,27 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     public static String[] getRequestPermissions() {
-        return new String[] {
+        return new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA
         };
     }
 
-    /** 프래그먼트 **/
+    /**
+     * 프래그먼트
+     **/
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private SlotMachineFragment slotMachineFragment;
     private MapTestFragment mapTestFragment;
+    private LocalIPFragment localIPFragment;
 
     // BindView
-    @BindView(R.id.menu)
     ImageView menu;
-    @BindView(R.id.logo)
     TextView logo;
-    @BindView(R.id.tab)
     ConstraintLayout tab;
-    @BindView(R.id.container)
     FrameLayout container;
-    @BindView(R.id.mainLayout)
     LinearLayout mainLayout;
 
     View tabView;
@@ -80,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
+        menu = findViewById(R.id.menu);
+        logo = findViewById(R.id.logo);
+        tab = findViewById(R.id.tab);
+        container = findViewById(R.id.container);
+        mainLayout = findViewById(R.id.mainLayout);
 
         ActivityCompat.requestPermissions(this, getRequestPermissions(), 100);
 
@@ -92,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         slotMachineFragment = new SlotMachineFragment();
         mapTestFragment = new MapTestFragment();
+        localIPFragment = new LocalIPFragment();
 
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container, slotMachineFragment).commitAllowingStateLoss();
@@ -99,29 +104,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == 100 && grantResults.length == getRequestPermissions().length) {
+        if (requestCode == 100 && grantResults.length == getRequestPermissions().length) {
 
             boolean checkResult = false;
             String resultMsg = "";
 
-            for(int i = 0; i < grantResults.length; i++) {
+            for (int i = 0; i < grantResults.length; i++) {
                 int result = grantResults[i];
-                if(result != PackageManager.PERMISSION_GRANTED) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
                     checkResult = true;
                     resultMsg = permissions[i];
                     break;
                 }
             }
 
-            if(checkResult) {
+            if (checkResult) {
                 String errMsg = resultMsg + " 권한이 거부되어 앱을 실행할 수 없습니다. 설정에서 권한을 허용하고 다시 실행해 주십시오.";
                 GLog.d(errMsg);
-                DlgUtil.showConfirmDlg(this, errMsg, false, (dialogInterface, i) -> {});
+                DlgUtil.showConfirmDlg(this, errMsg, false, (dialogInterface, i) -> {
+                });
             }
         }
     }
 
-    private OnSingleClickListener mainClick = new OnSingleClickListener() {
+    private final OnSingleClickListener mainClick = new OnSingleClickListener() {
         @Override
         public void onSingleClick(View v) {
             if (v.getId() == R.id.menu) {
@@ -149,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         items.add("카지노 룰렛 휠");
         items.add("SNS 로그인");
         items.add("카카오주소 API");
+        items.add("ip 주소");
         menuAdapter = new MenuAdapter(items, getApplicationContext());
         menuAdapter.setItemClick((view, position) -> {
             hamburger.dismiss();
@@ -165,17 +172,17 @@ public class MainActivity extends AppCompatActivity {
     private void setContainer(String value) {
         Fragment fragment;
         switch (value) {
-            case "카지노 룰렛 휠" :
+            case "카지노 룰렛 휠":
                 fragment = fragmentManager.getPrimaryNavigationFragment();
-                if(transaction != null) {
+                if (transaction != null) {
                     transaction = fragmentManager.beginTransaction();
-                    if(fragment != null)
+                    if (fragment != null)
                         transaction.remove(fragment);
                     transaction.replace(R.id.container, slotMachineFragment).commitAllowingStateLoss();
                 }
                 break;
 
-            case "SNS 로그인" :
+            case "SNS 로그인":
                 Intent intent = new Intent(MainActivity.this, SnsLoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in_activity, R.anim.hold_activity);
@@ -183,11 +190,21 @@ public class MainActivity extends AppCompatActivity {
 
             case "카카오주소 API":
                 fragment = fragmentManager.getPrimaryNavigationFragment();
+                if (transaction != null) {
+                    transaction = fragmentManager.beginTransaction();
+                    if (fragment != null)
+                        transaction.remove(fragment);
+                    transaction.replace(R.id.container, mapTestFragment).commitAllowingStateLoss();
+                }
+                break;
+
+            case "ip 주소" :
+                fragment = fragmentManager.getPrimaryNavigationFragment();
                 if(transaction != null) {
                     transaction = fragmentManager.beginTransaction();
                     if(fragment != null)
                         transaction.remove(fragment);
-                    transaction.replace(R.id.container, mapTestFragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.container, localIPFragment).commitAllowingStateLoss();
                 }
                 break;
 

@@ -76,7 +76,6 @@ public class SlotMachineFragment extends Fragment {
 
     ViewGroup rootView;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,7 +107,7 @@ public class SlotMachineFragment extends Fragment {
         }
     };
 
-    private OnWheelChangedListener changedListener = (wheel, oldValue, newValue) -> {
+    private final OnWheelChangedListener changedListener = (wheel, oldValue, newValue) -> {
         if (!wheelScrolled)
             updateStatus();
     };
@@ -333,8 +332,8 @@ public class SlotMachineFragment extends Fragment {
         final int IMAGE_HEIGHT = 150;
         int[] items;
 
-        private List<SoftReference<Bitmap>> images;
-        private Context context;
+        private final List<SoftReference<Bitmap>> images;
+        private final Context context;
 
         public SlotMachineAdapter(Context context, int[] items) {
             this.context = context;

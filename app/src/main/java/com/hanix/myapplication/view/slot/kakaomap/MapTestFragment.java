@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment;
 import com.hanix.myapplication.R;
 import com.hanix.myapplication.view.event.OnSingleClickListener;
 
+import static com.hanix.myapplication.R.id.*;
+
 public class MapTestFragment extends Fragment {
 
     private WebView mapWebView;
@@ -49,15 +51,9 @@ public class MapTestFragment extends Fragment {
     OnSingleClickListener mapClick = new OnSingleClickListener() {
         @Override
         public void onSingleClick(View v) {
-            switch (v.getId()) {
-                case R.id.mapFindBtn :
-                    showMapDialog();
-                    break;
-
-
-                case R.id.mapTextView:
-                default :
-                    break;
+            int id = v.getId();
+            if (id == R.id.mapFindBtn) {
+                showMapDialog();
             }
         }
     };
@@ -93,7 +89,6 @@ public class MapTestFragment extends Fragment {
     static class MyJavaScriptInterface {
 
         @JavascriptInterface
-        @SuppressWarnings("unused")
         public void processDATA(String data) {
             new Handler().post(() -> {
                 mapTextView.setText(data);

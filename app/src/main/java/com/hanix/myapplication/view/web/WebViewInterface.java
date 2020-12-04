@@ -11,8 +11,8 @@ import com.hanix.myapplication.common.utils.DeviceUtil;
 public class WebViewInterface {
 
     public static final String NAME_JS_INTERFACE = "Android";
-    private WebView mWebView;
-    private Activity mContext;
+    private final WebView mWebView;
+    private final Activity mContext;
 
     /**
      * 생성자.

@@ -22,7 +22,7 @@ import java.net.URLDecoder;
 
 public class WebDownloadListener implements DownloadListener {
 
-    private MainActivity activity;
+    private final MainActivity activity;
 
     public WebDownloadListener(MainActivity activity) {
         this.activity = activity;

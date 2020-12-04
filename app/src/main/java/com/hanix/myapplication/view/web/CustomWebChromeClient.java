@@ -33,13 +33,13 @@ public class CustomWebChromeClient extends WebChromeClient {
 
     private ValueCallback<Uri[]> mFilePathCallback;
     private ValueCallback<Uri> mUploadMessage;
-    private Uri mCaptureImageURI = null;
+    private final Uri mCaptureImageURI = null;
     private String mCameraPhotoPath;
 
     // 카메라 끝
 
-    private MainActivity mActivity;
-    private WebView mWebView;
+    private final MainActivity mActivity;
+    private final WebView mWebView;
 
     public CustomWebChromeClient(MainActivity activity, WebView webView){
         this.mActivity = activity;
@@ -64,6 +64,7 @@ public class CustomWebChromeClient extends WebChromeClient {
         return super.onConsoleMessage(consoleMessage);
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     @Override
     public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> filePath, FileChooserParams fileChooserParams) {
 //        return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);

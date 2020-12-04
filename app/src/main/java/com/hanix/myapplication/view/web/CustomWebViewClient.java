@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 
 public class CustomWebViewClient extends WebViewClient {
 
-    private MainActivity mActivity;
+    private final MainActivity mActivity;
 
     public CustomWebViewClient (MainActivity activity){
         this.mActivity = activity;

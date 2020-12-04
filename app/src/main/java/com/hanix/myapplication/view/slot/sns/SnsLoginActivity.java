@@ -180,43 +180,31 @@ public class SnsLoginActivity extends AppCompatActivity {
     OnSingleClickListener loginButton = new OnSingleClickListener() {
         @Override
         public void onSingleClick(View v) {
-            switch (v.getId()) {
-                case R.id.googleLoginButton:
-                    GLog.d("googleLoginButton");
-                    signIn();
-                    break;
-
-                case R.id.googleLogoutButton:
-                    GLog.d("googleLogoutButton");
-                    googleLoginButton.setVisibility(View.VISIBLE);
-                    googleLogoutButton.setVisibility(View.GONE);
-                    FirebaseAuth.getInstance().signOut();
-                    break;
-
-                case R.id.kakaoCustomLogin:
-                    GLog.d("kakaoCustomLogin");
-                    if (session != null)
-                        session.open(AuthType.KAKAO_LOGIN_ALL, SnsLoginActivity.this);
-                    break;
-
-
-                case R.id.kakaoCustomLogout:
-                    GLog.d("kakaoCustomLogout");
-                    kakaoCustomLogin.setVisibility(View.VISIBLE);
-                    kakaoCustomLogout.setVisibility(View.GONE);
-                    UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-                        @Override
-                        public void onCompleteLogout() {
-                            Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    break;
-
-                case R.id.naverLoginButton :
-                    break;
-
-                case R.id.naverLogoutButton:
-                    break;
+            int id = v.getId();
+            if (id == R.id.googleLoginButton) {
+                GLog.d("googleLoginButton");
+                signIn();
+            } else if (id == R.id.googleLogoutButton) {
+                GLog.d("googleLogoutButton");
+                googleLoginButton.setVisibility(View.VISIBLE);
+                googleLogoutButton.setVisibility(View.GONE);
+                FirebaseAuth.getInstance().signOut();
+            } else if (id == R.id.kakaoCustomLogin) {
+                GLog.d("kakaoCustomLogin");
+                if (session != null)
+                    session.open(AuthType.KAKAO_LOGIN_ALL, SnsLoginActivity.this);
+            } else if (id == R.id.kakaoCustomLogout) {
+                GLog.d("kakaoCustomLogout");
+                kakaoCustomLogin.setVisibility(View.VISIBLE);
+                kakaoCustomLogout.setVisibility(View.GONE);
+                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                    @Override
+                    public void onCompleteLogout() {
+                        Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_LONG).show();
+                    }
+                });
+            } else if (id == R.id.naverLoginButton) {
+            } else if (id == R.id.naverLogoutButton) {
             }
         }
     };

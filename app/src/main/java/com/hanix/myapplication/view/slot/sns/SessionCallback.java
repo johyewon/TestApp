@@ -42,23 +42,23 @@ public class SessionCallback implements ISessionCallback {
                 GLog.d("KAKAO_API : 사용자 아이디: " + result.getId());
 
                 UserAccount account = result.getKakaoAccount();
-                if(account != null) {
+                if (account != null) {
 
                     SnsLoginActivity.setKakaoLogoutButtonVisible();
                     String email = account.getEmail();
 
-                    if(email != null) {
+                    if (email != null) {
                         GLog.d("사용자 이메일 : " + email);
-                    } else if(account.emailNeedsAgreement() == OptionalBoolean.TRUE) {
+                    } else if (account.emailNeedsAgreement() == OptionalBoolean.TRUE) {
                         // 동의 요청 후 이메일 획득 가능
                         // 단, 선택 동의로 설정되어있다면 서비스 이용 시나리오 상에서 반드시 필요한 경우에만 요청해야 합니다.
-                   } else {
+                    } else {
                         // 이메일 획득 불가
                     }
 
                     Profile profile = account.getProfile();
 
-                    if(profile != null) {
+                    if (profile != null) {
                         GLog.d("KAKAO_API nickname: " + profile.getNickname());
                         GLog.d("KAKAO_API profile image: " + profile.getProfileImageUrl());
                         GLog.d("KAKAO_API thumbnail image: " + profile.getThumbnailImageUrl());
