@@ -33,6 +33,7 @@ import com.hanix.myapplication.view.slot.kakaomap.MapTestFragment;
 import com.hanix.myapplication.view.slot.local.LocalIPFragment;
 import com.hanix.myapplication.view.slot.slotmachine.SlotMachineFragment;
 import com.hanix.myapplication.view.slot.sns.SnsLoginActivity;
+import com.hanix.myapplication.view.slot.text.ClearEditTextFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private SlotMachineFragment slotMachineFragment;
     private MapTestFragment mapTestFragment;
     private LocalIPFragment localIPFragment;
+    private ClearEditTextFragment clearEditTextFragment;
 
     // BindView
     ImageView menu;
@@ -67,12 +69,14 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout container;
     LinearLayout mainLayout;
 
+    // 상단 메뉴(햄버거바) 시작
     View tabView;
     RecyclerView tabSlotRecyclerView;
     LinearLayout tabLayout;
 
     MenuAdapter menuAdapter;
     List<String> items;
+    // 상단 메뉴(햄버거바) 끝
 
 
     @Override
@@ -92,11 +96,13 @@ public class MainActivity extends AppCompatActivity {
         menu.setOnClickListener(mainClick);
         logo.setOnClickListener(mainClick);
         tab.setOnClickListener(mainClick);
+
         fragmentManager = getSupportFragmentManager();
 
         slotMachineFragment = new SlotMachineFragment();
         mapTestFragment = new MapTestFragment();
         localIPFragment = new LocalIPFragment();
+        clearEditTextFragment = new ClearEditTextFragment();
 
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container, slotMachineFragment).commitAllowingStateLoss();
@@ -130,32 +136,35 @@ public class MainActivity extends AppCompatActivity {
     private final OnSingleClickListener mainClick = new OnSingleClickListener() {
         @Override
         public void onSingleClick(View v) {
-            if (v.getId() == R.id.menu) {
-                showHamburger();
-            }
+            showHamburger();
         }
     };
 
+    /**
+     * 햄버거 메뉴 보여주기
+     */
     private void showHamburger() {
         Dialog hamburger = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         hamburger.setContentView(R.layout.dialog_tab_menu);
+
         Objects.requireNonNull(hamburger.getWindow()).getAttributes().windowAnimations = R.style.SlideLeftStyle;
         hamburger.getWindow().setBackgroundDrawableResource(R.color.transparent);
-
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        layoutParams.copyFrom(hamburger.getWindow().getAttributes());
-        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        hamburger.getWindow().getAttributes().width = WindowManager.LayoutParams.MATCH_PARENT;
+        hamburger.getWindow().getAttributes().height = WindowManager.LayoutParams.MATCH_PARENT;
 
         tabView = hamburger.findViewById(R.id.tabView);
-        tabSlotRecyclerView = hamburger.findViewById(R.id.tabSlotRecyclerView);
         tabLayout = hamburger.findViewById(R.id.tabLayout);
+        tabSlotRecyclerView = hamburger.findViewById(R.id.tabSlotRecyclerView);
 
         items = new ArrayList<>();
+
+        // slot 추가
         items.add("카지노 룰렛 휠");
         items.add("SNS 로그인");
         items.add("카카오주소 API");
         items.add("ip 주소");
+        items.add("Clear EditText");
+
         menuAdapter = new MenuAdapter(items, getApplicationContext());
         menuAdapter.setItemClick((view, position) -> {
             hamburger.dismiss();
@@ -169,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 선택한 옵션에 따라  fragment 변경
+     *
+     * @param value
+     */
     private void setContainer(String value) {
         Fragment fragment;
         switch (value) {
@@ -198,13 +212,23 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
 
-            case "ip 주소" :
+            case "ip 주소":
                 fragment = fragmentManager.getPrimaryNavigationFragment();
-                if(transaction != null) {
+                if (transaction != null) {
                     transaction = fragmentManager.beginTransaction();
-                    if(fragment != null)
+                    if (fragment != null)
                         transaction.remove(fragment);
                     transaction.replace(R.id.container, localIPFragment).commitAllowingStateLoss();
+                }
+                break;
+
+            case "Clear EditText":
+                fragment = fragmentManager.getPrimaryNavigationFragment();
+                if (transaction != null) {
+                    transaction = fragmentManager.beginTransaction();
+                    if (fragment != null)
+                        transaction.remove(fragment);
+                    transaction.replace(R.id.container, clearEditTextFragment).commitAllowingStateLoss();
                 }
                 break;
 

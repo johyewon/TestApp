@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#a2ceff</color>
+    <color name="colorPrimaryDark">#459dff</color>
+    <color name="colorAccent">#73b9eb</color>
 
-    <color name="mainColor">#d2d2d2</color>
+    <color name="mainColor">#73b9eb</color>
+    <color name="mainColorText">#ffffff</color>
+
+    <color name="textColorPrimary">#212121</color>
+    <color name="textColorSecondary">#757575</color>
 
     <!-- colors -->
     <color name="white">#ffffff</color>
-    <color name="light_gray">#eeeeee</color>
-    <color name="gray">#d2d2d2</color>
-    <color name="dark_gray">#999999</color>
     <color name="black">#000000</color>
+    <color name="dark_white">#d2d2d2</color>
+    <color name="light_black">#242424</color>
+    <color name="light_gray">#a0a0a0</color>
+    <color name="dark_gray">#5a5a5a</color>
+
+    <color name="gray">#828282</color>
+    <color name="BD">#BDBDBD</color>
+    <color name="transparent">#00ffffff</color>
+
+    <color name="background">#ffffff</color>
+    <!--    <color name="background">#fcfcfc</color>-->
+    <color name="background_button">#ededed</color>
+    <color name="light_red">#eb7373</color>
+    <color name="light_red_text">#ffffff</color>
+
+    <color name="dirty_white">#F3F3F3</color>
     <color name="light_blue_gray">#e9e9e9</color>
     <color name="blue">#0033ff</color>
-    <color name="transparent">#00ff0000</color>
+
+    <color name="kakao">#F7E600</color>
 </resources>
